@@ -32,13 +32,17 @@
   padding: 0;
 }
 
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
 body {
   background-color: var(--bg-primary);
   color: var(--text-main);
   font-family: var(--font-sans);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
 }
 
 button, input, select {
@@ -665,6 +669,8 @@ button, input, select {
   display: flex;
   flex-direction: column;
   background: #070c18;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .blueprint-header {
@@ -708,6 +714,9 @@ button, input, select {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .cad-view-block {
@@ -1348,3 +1357,185 @@ button, input, select {
 .font-mono { font-family: var(--font-mono); }
 .font-bold { font-weight: 700; }
 .uppercase { text-transform: uppercase; }
+
+/* ==================== MULTI-STOP DYNAMIC CG PANEL ==================== */
+.multistop-panel-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.multistop-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.multistop-header h3 {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.multistop-header .subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.active-stage-chip {
+  background: rgba(56, 189, 248, 0.15);
+  color: var(--accent-cyan);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  font-family: var(--font-mono);
+}
+
+.stepper-buttons-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.stage-btn {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+
+.stage-btn:hover {
+  border-color: #475569;
+}
+
+.stage-btn.active {
+  background: rgba(56, 189, 248, 0.1);
+  border-color: var(--accent-cyan);
+}
+
+.stage-btn.has-hazard {
+  border-color: rgba(244, 63, 94, 0.5);
+}
+
+.stage-btn.has-hazard.active {
+  background: rgba(244, 63, 94, 0.15);
+  border-color: var(--accent-rose);
+}
+
+.btn-stage-num {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-stage-label {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.stage-status-banner {
+  padding: 12px 16px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stage-status-banner.ok {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #a7f3d0;
+}
+
+.stage-status-banner.hazard {
+  background: rgba(244, 63, 94, 0.12);
+  border: 1px solid rgba(244, 63, 94, 0.4);
+  color: #fecdd3;
+}
+
+.status-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+.hazard-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-rose);
+}
+
+.axle-scales-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+}
+
+.axle-scale-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.axle-scale-card.highlight-card {
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+.axle-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.legal-cap {
+  font-size: 10px;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+}
+
+.scale-reading {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.weight-num {
+  font-size: 24px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  line-height: 1;
+}
+
+.scale-reading .unit {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.gauge-pct {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--text-dim);
+}

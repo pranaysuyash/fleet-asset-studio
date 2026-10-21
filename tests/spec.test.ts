@@ -12,6 +12,15 @@ import {
   exportOpenLogisticsAssetJson,
   exportSpecCsv,
 } from '../src/engine/bridges';
+import {
+  calculateAxleDistribution,
+  simulateMultiStopUnload,
+  type StopCargoGroup,
+} from '../src/engine/multistop';
+import {
+  splitCargoDemandAcrossFleet,
+  DEFAULT_SPLITTER_VEHICLE_IDS,
+} from '../src/engine/fleetSplitter';
 
 describe('Catalog Integrity & Completeness', () => {
   it('contains at least 20 detailed commercial cargo vehicles', () => {
@@ -154,3 +163,127 @@ describe('Cross-Project Bridges & Exporting', () => {
     expect(csvStr).toContain('"Detroit DD15');
   });
 });
+
+describe('Multi-Stop Sequential Unload & Dynamic CG Simulator', () => {
+  const dryVan = STANDARD_VEHICLES.find((v) => v.id === 'dry-van-53')!;
+
+  const testGroups: StopCargoGroup[] = [
+    {
+      stopNumber: 1,
+      stopName: 'Stop 1 Rear Drop',
+      itemCount: 8,
+      totalWeightLbs: 14000,
+      zCenterInches: 520, // Loaded near rear doors
+    },
+    {
+      stopNumber: 2,
+      stopName: 'Stop 2 Mid Drop',
+      itemCount: 8,
+      totalWeightLbs: 14000,
+      zCenterInches: 320, // Mid trailer
+    },
+    {
+      stopNumber: 3,
+      stopName: 'Stop 3 Nose Drop',
+      itemCount: 8,
+      totalWeightLbs: 14000,
+      zCenterInches: 120, // Nose bulkhead
+    },
+  ];
+
+  it('calculates balanced initial axle distribution when all stops are loaded', () => {
+    const initial = calculateAxleDistribution(dryVan, testGroups);
+    expect(initial.totalGrossLbs).toBe(33500 + 42000);
+    expect(initial.steerLbs).toBeLessThanOrEqual(12000);
+    expect(initial.driveTandemLbs).toBeLessThanOrEqual(34000);
+    expect(initial.trailerTandemLbs).toBeLessThanOrEqual(34000);
+    expect(initial.isLegal).toBe(true);
+  });
+
+  it('detects forward Center of Gravity (CG) shift when rear Stop 1 is unloaded', () => {
+    const stages = simulateMultiStopUnload(dryVan, testGroups);
+    expect(stages.length).toBe(4); // Stage 0 (initial), Stage 1, Stage 2, Stage 3 (empty)
+
+    const stage0 = stages[0];
+    const stage1 = stages[1];
+
+    // Cargo CG must shift forward (lower inches from nose)
+    expect(stage1.distribution.cgInchesFromNose).toBeLessThan(stage0.distribution.cgInchesFromNose);
+    // Weight on trailer tandem decreases
+    expect(stage1.distribution.trailerTandemLbs).toBeLessThan(stage0.distribution.trailerTandemLbs);
+    // Drive tandem load percentage of total payload increases
+    const driveRatio0 = stage0.distribution.driveTandemLbs / stage0.activePayloadLbs;
+    const driveRatio1 = stage1.distribution.driveTandemLbs / stage1.activePayloadLbs;
+    expect(driveRatio1).toBeGreaterThan(driveRatio0);
+  });
+});
+
+describe('Multi-Vehicle Fleet Splitter Heuristic', () => {
+  it('partitions an oversized manifest (48 pallets / 72,000 lbs) exceeding single-trailer legal limits into multiple vehicles', () => {
+    const result = splitCargoDemandAcrossFleet({
+      items: [
+        {
+          packageId: 'pallet-gma-48x40',
+          quantity: 48,
+          customWeightLbs: 1500, // 48 * 1500 = 72,000 lbs (exceeds 45k lb semi payload)
+        },
+      ],
+      allowedVehicleIds: DEFAULT_SPLITTER_VEHICLE_IDS,
+    });
+
+    expect(result.totalVehicles).toBeGreaterThanOrEqual(2);
+    expect(result.totalDemandWeightLbs).toBe(72000);
+    expect(result.totalDemandItems).toBe(48);
+
+    // Sum of allocated items must equal total demand items
+    const totalAllocatedItems = result.partitions.reduce((sum, p) => sum + p.allocatedItems.reduce((s, i) => s + i.quantity, 0), 0);
+    expect(totalAllocatedItems).toBe(48);
+
+    // Each vehicle must not exceed legal limits
+    for (const p of result.partitions) {
+      expect(p.isOverweight).toBe(false);
+      expect(p.isOvercube).toBe(false);
+      expect(p.weightUtilizationPct).toBeLessThanOrEqual(100);
+    }
+  });
+
+  it('generates valid Product 01 (Cargo Fit) deep bridge links with encoded trailer specs', () => {
+    const result = splitCargoDemandAcrossFleet({
+      items: [
+        {
+          packageId: 'pallet-gma-48x40',
+          quantity: 30,
+          customWeightLbs: 1200,
+        },
+      ],
+    });
+
+    expect(result.partitions.length).toBeGreaterThanOrEqual(1);
+    for (const p of result.partitions) {
+      expect(p.cargoFitBridgeUrl).toContain('http://localhost:5173/?');
+      expect(p.cargoFitBridgeUrl).toContain('source=product-04-asset-studio-splitter');
+      expect(p.cargoFitBridgeUrl).toContain(`vehicleId=${p.vehicle.id}`);
+      expect(p.cargoFitBridgeUrl).toContain('trailerLength=');
+      expect(p.cargoFitBridgeUrl).toContain('trailerWidth=');
+    }
+  });
+
+  it('right-sizes equipment when smaller loads fit into straight or box trucks', () => {
+    const result = splitCargoDemandAcrossFleet({
+      items: [
+        {
+          packageId: 'pallet-gma-48x40',
+          quantity: 8,
+          customWeightLbs: 1000, // 8,000 lbs, fits into box truck
+        },
+      ],
+      allowedVehicleIds: ['box-truck-26', 'cube-step-van', 'sprinter-van'],
+    });
+
+    expect(result.totalVehicles).toBe(1);
+    expect(result.partitions[0].vehicle.id).toMatch(/box-truck-26|cube-step-van/);
+    expect(result.partitions[0].totalWeightLbs).toBe(8000);
+  });
+});
+
+

@@ -18,6 +18,8 @@ import { IsometricVehicle25D } from './IsometricVehicle25D';
 import { Blueprint2DView } from './Blueprint2DView';
 import { SpatialCapacityPanel } from './SpatialCapacityPanel';
 import { TemporalSimulatorPanel } from './TemporalSimulatorPanel';
+import { MultiStopUnloadPanel } from './MultiStopUnloadPanel';
+import { FleetSplitterPanel } from './FleetSplitterPanel';
 import { AssetForgeModal } from './AssetForgeModal';
 import { ProjectBridgeBar } from './ProjectBridgeBar';
 
@@ -318,6 +320,12 @@ export function App() {
               onSetSpeed={setSpeedMph}
             />
           </div>
+
+          {/* MULTI-STOP DROP SEQUENCE & DYNAMIC CG AXLE SIMULATOR */}
+          <MultiStopUnloadPanel vehicle={selectedVehicle} />
+
+          {/* MULTI-VEHICLE FLEET SPLITTER & DEMAND PARTITIONING */}
+          <FleetSplitterPanel />
         </main>
       </div>
 
