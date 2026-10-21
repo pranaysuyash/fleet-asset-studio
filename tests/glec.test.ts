@@ -1,7 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
   calculateCarbonFootprint,
-  GLEC_EMISSION_FACTORS,
   type CarbonTripInput,
 } from '../src/engine/glec';
 

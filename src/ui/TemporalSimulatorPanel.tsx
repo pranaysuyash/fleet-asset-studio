@@ -58,10 +58,12 @@ export const TemporalSimulatorPanel: React.FC<TemporalSimulatorPanelProps> = ({
         {/* Distance Slider */}
         <div className="slider-control-block">
           <div className="slider-header">
-            <span>Corridor Route Distance:</span>
+            <label htmlFor="corridor-distance-slider">Corridor Route Distance:</label>
             <strong className="text-cyan font-mono">{distanceMiles} Miles</strong>
           </div>
           <input
+            id="corridor-distance-slider"
+            aria-label="Corridor Route Distance in Miles"
             type="range"
             min="25"
             max="1400"
@@ -75,10 +77,12 @@ export const TemporalSimulatorPanel: React.FC<TemporalSimulatorPanelProps> = ({
         {/* Speed Slider */}
         <div className="slider-control-block">
           <div className="slider-header">
-            <span>Cruising Speed:</span>
+            <label htmlFor="cruising-speed-slider">Cruising Speed:</label>
             <strong className="text-amber font-mono">{speedMph} MPH</strong>
           </div>
           <input
+            id="cruising-speed-slider"
+            aria-label="Cruising Speed in Miles Per Hour"
             type="range"
             min="35"
             max="75"

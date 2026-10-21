@@ -20,8 +20,10 @@ import { SpatialCapacityPanel } from './SpatialCapacityPanel';
 import { TemporalSimulatorPanel } from './TemporalSimulatorPanel';
 import { MultiStopUnloadPanel } from './MultiStopUnloadPanel';
 import { FleetSplitterPanel } from './FleetSplitterPanel';
+import { CarbonInsettingPanel } from './CarbonInsettingPanel';
 import { AssetForgeModal } from './AssetForgeModal';
 import { ProjectBridgeBar } from './ProjectBridgeBar';
+import { SuiteDock } from './SuiteDock';
 
 export function App() {
   const [vehicleCatalog, setVehicleCatalog] = useState<VehicleSpec[]>(() => getVehicleCatalog());
@@ -97,6 +99,7 @@ export function App() {
 
   return (
     <div className="studio-app-container">
+      <SuiteDock currentProductId="product-04-asset-studio" />
       {/* Top Project Bridge Header */}
       <ProjectBridgeBar
         vehicle={selectedVehicle}
@@ -121,8 +124,10 @@ export function App() {
           </div>
 
           <div className="vehicle-category-list">
-            <label className="sidebar-group-label">Select Cargo Vehicle:</label>
+            <label htmlFor="vehicle-main-select" className="sidebar-group-label">Select Cargo Vehicle:</label>
             <select
+              id="vehicle-main-select"
+              aria-label="Select Commercial Cargo Vehicle"
               className="vehicle-main-select"
               value={selectedVehicleId}
               onChange={(e) => setSelectedVehicleId(e.target.value)}
@@ -326,6 +331,9 @@ export function App() {
 
           {/* MULTI-VEHICLE FLEET SPLITTER & DEMAND PARTITIONING */}
           <FleetSplitterPanel />
+
+          {/* GLEC FRAMEWORK V3.0 / EPA SMARTWAY CARBON INSETTING */}
+          <CarbonInsettingPanel defaultMiles={distanceMiles} vehicleName={selectedVehicle.name} />
         </main>
       </div>
 

@@ -47,8 +47,10 @@ export const SpatialCapacityPanel: React.FC<SpatialCapacityPanelProps> = ({
 
       {/* Package Selector */}
       <div className="form-row">
-        <label className="input-label">Select Packaging, Container or Pallet:</label>
+        <label htmlFor="package-select-dropdown" className="input-label">Select Packaging, Container or Pallet:</label>
         <select
+          id="package-select-dropdown"
+          aria-label="Select Packaging, Container or Pallet"
           className="select-dropdown"
           value={selectedPackage.id}
           onChange={(e) => {
@@ -160,6 +162,8 @@ export const SpatialCapacityPanel: React.FC<SpatialCapacityPanelProps> = ({
         </div>
         <input
           type="range"
+          id="package-quantity-slider"
+          aria-label="Package Quantity Override Slider"
           min="1"
           max={Math.max(1, spatialFit.maxUnitsByWeight * 1.2)}
           value={currentUnits}
