@@ -14,6 +14,7 @@ import type {
   RenderStyle3D,
 } from '../engine/types';
 import { Realtime3DCanvas } from './Realtime3DCanvas';
+import { Interactive3DTeardown } from './Interactive3DTeardown';
 import { IsometricVehicle25D } from './IsometricVehicle25D';
 import { Blueprint2DView } from './Blueprint2DView';
 import { SpatialCapacityPanel } from './SpatialCapacityPanel';
@@ -242,19 +243,25 @@ export function App() {
                 className={`tab-btn ${viewMode === '3d' ? 'active' : ''}`}
                 onClick={() => setViewMode('3d')}
               >
-                🎮 Real-time 3D Canvas (Three.js WebGL)
+                🎮 3D Assembly Canvas
+              </button>
+              <button
+                className={`tab-btn tab-btn-teardown ${viewMode === 'teardown' ? 'active' : ''}`}
+                onClick={() => setViewMode('teardown')}
+              >
+                💥 3D Teardown & Cutaway Lab
               </button>
               <button
                 className={`tab-btn ${viewMode === '2.5d' ? 'active' : ''}`}
                 onClick={() => setViewMode('2.5d')}
               >
-                📐 2.5D Isometric Technical (Axonometric)
+                📐 2.5D Isometric Technical
               </button>
               <button
                 className={`tab-btn ${viewMode === '2d' ? 'active' : ''}`}
                 onClick={() => setViewMode('2d')}
               >
-                📏 2D Orthographic CAD Blueprint (3-View)
+                📏 2D Orthographic CAD Blueprint
               </button>
             </div>
 
@@ -277,6 +284,14 @@ export function App() {
                 doorsOpen={doorsOpen}
                 onToggleDoors={() => setDoorsOpen(!doorsOpen)}
                 onSetRenderStyle={setRenderStyle3D}
+              />
+            )}
+
+            {viewMode === 'teardown' && (
+              <Interactive3DTeardown
+                vehicle={selectedVehicle}
+                selectedPackage={selectedPackage}
+                placements={spatialFit.gridPlacements}
               />
             )}
 

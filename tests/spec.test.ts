@@ -286,4 +286,22 @@ describe('Multi-Vehicle Fleet Splitter Heuristic', () => {
   });
 });
 
+describe('3D View Modes & Teardown Specifications', () => {
+  it('supports 3d, teardown, 2.5d, and 2d view modes', () => {
+    const validModes: import('../src/engine/types').ViewMode[] = ['3d', 'teardown', '2.5d', '2d'];
+    expect(validModes).toContain('teardown');
+    expect(validModes.length).toBe(4);
+  });
+
+  it('computes spatial placements correctly for 3D teardown placement rendering', () => {
+    const dryVan = STANDARD_VEHICLES.find((v) => v.id === 'dry-van-53')!;
+    const gmaPallet = STANDARD_PACKAGES.find((p) => p.id === 'pallet-gma-48x40')!;
+    const fit = computeSpatialFit(dryVan, gmaPallet, 24);
+    expect(fit.gridPlacements.length).toBe(24);
+    expect(typeof fit.gridPlacements[0].xIn).toBe('number');
+    expect(fit.gridPlacements[0].yIn).toBeGreaterThanOrEqual(0);
+    expect(typeof fit.gridPlacements[0].zIn).toBe('number');
+  });
+});
+
 

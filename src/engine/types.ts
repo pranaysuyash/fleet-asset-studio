@@ -223,5 +223,5 @@ export interface TemporalSimulation {
   totalTurnaroundHours: number;
 }
 
-export type ViewMode = '3d' | '2.5d' | '2d';
+export type ViewMode = '3d' | 'teardown' | '2.5d' | '2d';
 export type RenderStyle3D = 'solid' | 'cutaway' | 'wireframe';
