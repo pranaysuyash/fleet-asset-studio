@@ -78,6 +78,15 @@ $$\text{DragFactor} = 1.0 + \max(0, \text{Speed}_{\text{mph}} - 60) \times 0.012
 $$\text{EffectiveMPG} = \frac{\text{BaseMPG}}{\text{DragFactor}}$$
 $$\text{FuelBurned} = \frac{\text{Distance}_{\text{miles}}}{\text{EffectiveMPG}}$$
 
+### Dynamic CG & Multi-Stop Sequential Unload
+$$\text{CG}_{\text{kingpin}} = \frac{\sum (W_i \times \text{Dist}_i)}{\sum W_i}$$
+$$\text{Weight}_{\text{trailer\_tandem}} = \text{Tare}_{\text{trailer}} + W_{\text{cargo}} \times \frac{\text{CG}_{\text{kingpin}}}{\text{Bogie}_{\text{span}}}$$
+$$\text{Weight}_{\text{drive\_tandem}} = \text{Tare}_{\text{drive}} + (W_{\text{cargo}} - \text{Weight}_{\text{trailer\_tandem\_cargo}}) \times 0.95$$
+$$\text{Weight}_{\text{steer}} = \text{Tare}_{\text{steer}} + (W_{\text{cargo}} - \text{Weight}_{\text{trailer\_tandem\_cargo}}) \times 0.05$$
+
+### Multi-Vehicle Fleet Splitter Heuristic
+Partitions manifests exceeding 45,000 lbs or 26 GMA pallets into optimal combinations from the 20-vehicle catalog using First-Fit Decreasing and greedy right-sizing, generating direct 3D packing bridge deep links to Product 01.
+
 ---
 
 ## 5. Testing & Verification
@@ -86,4 +95,4 @@ Run the test suite:
 ```bash
 npm test
 ```
-- 14 passing unit tests verifying vehicle catalog completeness, package shapes, spatial clearance calculations, temporal dynamics, cross-project bridges, and JSON schema export.
+- 19 passing unit tests verifying vehicle catalog completeness, package shapes, spatial clearance calculations, temporal dynamics, cross-project bridges, multi-stop sequential CG shifts, and multi-vehicle fleet partitioning.
