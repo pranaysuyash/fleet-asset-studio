@@ -12,6 +12,7 @@ import {
   exportOpenLogisticsAssetJson,
   exportSpecCsv,
 } from '../engine/bridges';
+import { isProductLicensed } from './SuiteDock';
 
 interface ProjectBridgeBarProps {
   vehicle: VehicleSpec;
@@ -35,23 +36,41 @@ export const ProjectBridgeBar: React.FC<ProjectBridgeBarProps> = ({
   const [copyFeedback, setCopyFeedback] = useState<string | null>(null);
 
   const handleSendToCargoFit = () => {
-    const url = buildCargoFitBridgeUrl(vehicle, selectedPackage, spatialFit.placedUnits);
-    window.open(url, '_blank');
+    if (isProductLicensed('product-01-cargo-fit')) {
+      const url = buildCargoFitBridgeUrl(vehicle, selectedPackage, spatialFit.placedUnits);
+      window.open(url, '_blank');
+    } else {
+      handleExportJson();
+      setCopyFeedback('Product 01 is an add-on module. Exported Open Logistics Asset JSON.');
+      setTimeout(() => setCopyFeedback(null), 4000);
+    }
   };
 
   const handleSendToFreightPricing = () => {
-    const url = buildFreightPricingBridgeUrl(
-      vehicle,
-      spatialFit.totalWeightLbs,
-      distanceMiles,
-      Boolean(selectedPackage.hazmatClass)
-    );
-    window.open(url, '_blank');
+    if (isProductLicensed('product-02-freight-pricing')) {
+      const url = buildFreightPricingBridgeUrl(
+        vehicle,
+        spatialFit.totalWeightLbs,
+        distanceMiles,
+        Boolean(selectedPackage.hazmatClass)
+      );
+      window.open(url, '_blank');
+    } else {
+      handleExportJson();
+      setCopyFeedback('Product 02 is an add-on module. Exported Open Logistics Asset JSON.');
+      setTimeout(() => setCopyFeedback(null), 4000);
+    }
   };
 
   const handleSendToHosPlanner = () => {
-    const url = buildHosPlannerBridgeUrl(vehicle, distanceMiles, speedMph);
-    window.open(url, '_blank');
+    if (isProductLicensed('product-03-hos-planner')) {
+      const url = buildHosPlannerBridgeUrl(vehicle, distanceMiles, speedMph);
+      window.open(url, '_blank');
+    } else {
+      handleExportJson();
+      setCopyFeedback('Product 03 is an add-on module. Exported Open Logistics Asset JSON.');
+      setTimeout(() => setCopyFeedback(null), 4000);
+    }
   };
 
   const handleExportJson = () => {
@@ -94,40 +113,6 @@ export const ProjectBridgeBar: React.FC<ProjectBridgeBarProps> = ({
             <div className="brand-subtitle">Fleet & Cargo Asset Studio · 3D / 2.5D / CAD Engine</div>
           </div>
         </div>
-
-        {/* Portfolio Cross-Navigation */}
-        <nav className="portfolio-nav">
-          <a
-            href="http://localhost:5173/"
-            target="_blank"
-            rel="noreferrer"
-            className="nav-link"
-            title="Product 01: Cargo Fit 3D Optimizer (Port 5173)"
-          >
-            P01: Cargo Fit
-          </a>
-          <a
-            href="http://localhost:5174/"
-            target="_blank"
-            rel="noreferrer"
-            className="nav-link"
-            title="Product 02: Freight Pricing & Tactical HUD (Port 5174)"
-          >
-            P02: Freight Pricing
-          </a>
-          <a
-            href="http://localhost:5175/"
-            target="_blank"
-            rel="noreferrer"
-            className="nav-link"
-            title="Product 03: HOS Corridor Planner (Port 5175)"
-          >
-            P03: HOS Planner
-          </a>
-          <span className="nav-link active">
-            P04: Asset Studio
-          </span>
-        </nav>
       </div>
 
       {/* Action Feeds Strip */}

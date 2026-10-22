@@ -25,6 +25,7 @@ import { CarbonInsettingPanel } from './CarbonInsettingPanel';
 import { AssetForgeModal } from './AssetForgeModal';
 import { ProjectBridgeBar } from './ProjectBridgeBar';
 import { SuiteDock } from './SuiteDock';
+import { platformBus } from '../engine/platformBus';
 
 export function App() {
   const [vehicleCatalog, setVehicleCatalog] = useState<VehicleSpec[]>(() => getVehicleCatalog());
@@ -73,6 +74,21 @@ export function App() {
       selectedPackage.category
     );
   }, [selectedVehicle, spatialFit.totalWeightLbs, distanceMiles, speedMph, spatialFit.placedUnits, selectedPackage]);
+
+  // Broadcast vehicle changes across the platform bus
+  useEffect(() => {
+    platformBus.publish(
+      'VEHICLE_CHANGED',
+      {
+        vehicleId: selectedVehicle.id,
+        vehicleName: selectedVehicle.name,
+        maxPayloadLbs: selectedVehicle.weight.maxPayloadLbs,
+        trailerLengthFt: selectedVehicle.interior.lengthFt,
+        source: 'product-04-asset-studio',
+      },
+      { senderProduct: 'product-04-asset-studio', senderPort: 5176 }
+    );
+  }, [selectedVehicle]);
 
   // Handle URL Parameter Sync (if launched from other projects)
   useEffect(() => {

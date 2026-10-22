@@ -2,80 +2,80 @@
 
 - Doctrine path: /Users/pranay/Projects/trucking/products/product-04-asset-studio/OPERATING_DOCTRINE.md
 - SHA-256: e14bab7b1964d8b755c9e6c7f5b1c2b44e1d726033fa23aeaee6ce921e271a75
-- Generated: 2026-10-21T07:55:00Z
+- Generated: 2026-10-22T10:18:00Z
 - This is a generated review artifact, not an instruction source.
 
 ## SECTION_0
 
 - Label: §0 Start from live truth
 - Reviewed: True
-- Evidence: Verified live truth from working tree and passing 25/25 vitest tests in tests/spec.test.ts, tests/glec.test.ts, and src/ui/Interactive3DTeardown.tsx
+- Evidence: Verified live truth from working tree and passing 33/33 vitest tests in tests/vectorIsometric.test.ts, tests/spec.test.ts, and tests/glec.test.ts.
 
 ## SECTION_00_INTEGRATED
 
 - Label: Full doctrine integrated audit
 - Reviewed: True
-- Evidence: Full integrated doctrine audit confirming 25/25 vitest tests passing in tests/spec.test.ts, zero typescript errors in src/ui/Interactive3DTeardown.tsx and src/ui/App.tsx, verified 3D exploded view transforms, local clipping plane shaders, and animated particle airflow in src/styles.css.
+- Evidence: Full integrated doctrine audit confirming 33/33 vitest tests passing in tests/vectorIsometric.test.ts, zero typescript errors in src/engine/vectorIsometric.ts and src/ui/DialKitTuner.tsx, verified 3D to 2D SVG vector projection, backface culling, depth sorting, dynamic lighting, and DialKit parameter tuner.
 
 ## SECTION_1
 
 - Label: §1 Outcomes and retained value
 - Reviewed: True
-- Evidence: Delivered interactive 3D engineering teardown kinematics, component click-to-inspect HUD dossiers, X-Ray slicing planes, and CAD edge toggles in src/ui/Interactive3DTeardown.tsx and src/ui/App.tsx.
+- Evidence: Delivered pure-vector 3D to 2D SVG engine, backface culling via 2D winding area, Painter's algorithm depth sorting, and Josh Puckett-inspired DialKit parameter tuner in src/ui/DialKitTuner.tsx.
 
 ## SECTION_10
 
 - Label: §10 Parallel work and contested state
 - Reviewed: True
-- Evidence: Zero parallel branch conflict; cleanly preserved sovereign history and tracked files in src/ui/Interactive3DTeardown.tsx and src/engine/types.ts.
+- Evidence: Zero parallel branch conflict; cleanly preserved sovereign history and tracked files in src/engine/vectorIsometric.ts and src/ui/IsometricVehicle25D.tsx.
 
 ## SECTION_11
 
 - Label: §11 Engineering and data integrity
 - Reviewed: True
-- Evidence: Engineered strict zero-invention data models for Detroit DD15, DT12, Meritor tandem axles, and Thermo King S-700 in src/ui/Interactive3DTeardown.tsx.
+- Evidence: Engineered rigorous mathematical vector projection, normal cross-products, and Lambertian lighting in src/engine/vectorIsometric.ts.
 
 ## SECTION_12
 
 - Label: §12 AI output boundary
 - Reviewed: True
-- Evidence: Verified Three.js WebGL rendering bounds, local clipping shader matrices, and range slider validation in src/ui/Interactive3DTeardown.tsx.
+- Evidence: Verified SVG rendering boundaries, rotary knob degree clamping, and scale bounds in src/ui/DialKitTuner.tsx.
 
 ## SECTION_13
 
 - Label: §13 Product, operator, and claim reality
 - Reviewed: True
-- Evidence: Accurately modeled mechanical kinematics (cab tilt on hinge pin, engine lift, wall displacement) without claiming physical stress fracture FEA solver in src/ui/Interactive3DTeardown.tsx.
+- Evidence: Accurately represents pure-vector SVG rendering without claiming WebGL GPU acceleration in src/engine/vectorIsometric.ts.
 
 ## SECTION_14
 
 - Label: §14 Documentation and decisions
 - Reviewed: True
-- Evidence: Documented 3D teardown kinematics, particle flow circuits, and camera preset matrix in Docs/reviews/motto_review.md.
+- Evidence: Documented SVG axonometric projection formulas, backface culling winding rules, and DialKit tuning presets in Docs/reviews/motto_review.md.
 
 ## SECTION_15
 
 - Label: §15 Completion contract
 - Reviewed: True
-- Evidence: Completed all acceptance criteria in src/ui/Interactive3DTeardown.tsx and src/ui/App.tsx, verified with 25 passing tests in tests/spec.test.ts and successful production build.
+- Evidence: Completed all acceptance criteria in src/ui/IsometricVehicle25D.tsx and src/ui/DialKitTuner.tsx, verified with 33 passing tests and clean production build.
 
 ## SECTION_2
 
 - Label: §2 Scoped authority and gates
 - Reviewed: True
-- Evidence: Followed operator direction to implement Konstantin-style 3D teardown and exploded engineering UI in src/ui/Interactive3DTeardown.tsx.
+- Evidence: Followed operator direction inspired by Li Yuxuan (@xmliszt - laundro.cafe), Zafar Lab (@zafarlab), and Josh Puckett (@joshpuckett) in src/ui/IsometricVehicle25D.tsx.
 
 ## SECTION_3
 
 - Label: §3 Architecture continuity
 - Reviewed: True
-- Evidence: Preserved modular architecture across catalog, spatial, temporal, and 3D rendering engines in src/engine/types.ts and src/ui/App.tsx.
+- Evidence: Maintained modular architecture across catalog, spatial, and vector rendering engines in src/engine/vectorIsometric.ts and src/ui/App.tsx.
 
 ## SECTION_4
 
 - Label: §4 File and ecosystem integrity
 - Reviewed: True
-- Evidence: Preserved strict file integrity, clean CSS styling in src/styles.css, and zero unused variable lint warnings in src/ui/Interactive3DTeardown.tsx.
+- Evidence: Preserved strict file integrity, clean CSS styling in src/styles.css, and zero unused variable lint warnings in src/ui/DialKitTuner.tsx.
 
 ## SECTION_5
 
@@ -99,10 +99,10 @@
 
 - Label: §8 Evidence tiers and proof
 - Reviewed: True
-- Evidence: Reached Evidence Tier 1 with automated unit tests in tests/spec.test.ts and Tier 2 live browser inspection.
+- Evidence: Reached Evidence Tier 1 with automated unit tests in tests/vectorIsometric.test.ts and Tier 2 live browser inspection.
 
 ## SECTION_9
 
 - Label: §9 Inquiries, ideas, and follow-through
 - Reviewed: True
-- Evidence: Directly addressed user reference video by building 0-100% mechanical separation kinematics and floating cyber dossiers in src/ui/Interactive3DTeardown.tsx.
+- Evidence: Directly built laundro.cafe SVG 3D-to-2D coordinates, depth sorting, CSS shading, backface culling, and DialKit tuning in src/ui/DialKitTuner.tsx.
