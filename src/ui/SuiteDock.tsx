@@ -1,4 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import {
+  ProductIcon,
+  IconBuilding,
+  IconGlobe,
+  IconPackage,
+  IconX,
+  IconLock,
+  IconSparkles,
+  IconExternalLink,
+  IconTruck,
+  IconFileText,
+  IconShieldAlert,
+} from './icons';
 
 export type ProductId =
   | 'command-center-portal'
@@ -36,7 +49,7 @@ export const CANONICAL_PRODUCTS: SubproductManifest[] = [
     shortName: 'Cargo Fit',
     code: 'P01',
     port: 5173,
-    icon: '📦',
+    icon: 'P01',
     description: '3D heuristic cargo packing, Federal Bridge Formula axle distribution, and securement compliance.',
     category: 'Optimization',
     routes: { dev: 'http://localhost:5173', cloud: 'https://cargofit.pages.dev' },
@@ -52,7 +65,7 @@ export const CANONICAL_PRODUCTS: SubproductManifest[] = [
     shortName: 'Freight Pricing',
     code: 'P02',
     port: 5174,
-    icon: '💰',
+    icon: 'P02',
     description: 'Carrier cost waterfall, EIA diesel index pegging, 3D digital twins, and broker rate confirmations.',
     category: 'Pricing',
     routes: { dev: 'http://localhost:5174', cloud: 'https://freightpricing.pages.dev' },
@@ -68,7 +81,7 @@ export const CANONICAL_PRODUCTS: SubproductManifest[] = [
     shortName: 'HOS Planner',
     code: 'P03',
     port: 5175,
-    icon: '⏱️',
+    icon: 'P03',
     description: 'FMCSA Part 395 statutory hours of service engine, 24-hr ELD logbooks, and corridor simulations.',
     category: 'Compliance',
     routes: { dev: 'http://localhost:5175', cloud: 'https://hosdispatch.pages.dev' },
@@ -84,7 +97,7 @@ export const CANONICAL_PRODUCTS: SubproductManifest[] = [
     shortName: 'Asset Studio',
     code: 'P04',
     port: 5176,
-    icon: '🚛',
+    icon: 'P04',
     description: 'Commercial vehicle & cargo packaging digital twin catalog, 3D WebGL, 2.5D Isometric, and 2D CAD blueprints.',
     category: 'Asset Studio',
     routes: { dev: 'http://localhost:5176', cloud: 'https://trucking-asset-studio.pages.dev' },
@@ -100,7 +113,7 @@ export const CANONICAL_PRODUCTS: SubproductManifest[] = [
     shortName: 'Telematics',
     code: 'P05',
     port: 5177,
-    icon: '📡',
+    icon: 'P05',
     description: 'SAE J1939 CAN-bus telemetry stream, reefer cold chain data logger, corridor GPS geofencing, and DTC alert diagnostics.',
     category: 'Telematics',
     routes: { dev: 'http://localhost:5177', cloud: 'https://fleet-telematics.pages.dev' },
@@ -116,7 +129,7 @@ export const CANONICAL_PRODUCTS: SubproductManifest[] = [
     shortName: 'Command Center',
     code: 'P00',
     port: 5170,
-    icon: '🕹️',
+    icon: 'P00',
     description: 'Top-level freight lifecycle stepper bringing all 5 subproducts under a unified single pane of glass.',
     category: 'Orchestration',
     routes: { dev: 'http://localhost:5170', cloud: 'https://trucking-command-center.pages.dev' },
@@ -206,7 +219,7 @@ export const SuiteDock: React.FC<SuiteDockProps> = ({ currentProductId }) => {
     name: 'Logistics Subproduct',
     shortName: 'Subproduct',
     code: 'PX',
-    icon: '🚛',
+    icon: 'P04',
     port: 5173,
     description: '',
     category: '',
@@ -236,7 +249,7 @@ export const SuiteDock: React.FC<SuiteDockProps> = ({ currentProductId }) => {
       ...prev,
       licensedProducts: [...prev.licensedProducts, p.id],
     }));
-    setTrialToast(`🎉 14-Day Free Trial Activated for ${p.name}!`);
+    setTrialToast(`14-Day Free Trial Activated for ${p.name}!`);
     setUpsellProduct(null);
     setTimeout(() => setTrialToast(null), 4000);
   };
@@ -347,7 +360,7 @@ export const SuiteDock: React.FC<SuiteDockProps> = ({ currentProductId }) => {
           </button>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(15, 23, 42, 0.8)', padding: '2px 8px', borderRadius: '4px', border: '1px solid #1e293b' }}>
-            <span>{currentProduct.icon}</span>
+            <span style={{ display: 'inline-flex', alignItems: 'center' }}><ProductIcon productId={currentProduct.id} size={15} /></span>
             <strong style={{ color: '#fff' }}>{currentProduct.shortName}</strong>
             <span style={{ fontSize: '9px', fontWeight: 800, background: '#38bdf8', color: '#000', padding: '1px 4px', borderRadius: '3px' }}>
               {currentProduct.code}
@@ -374,7 +387,7 @@ export const SuiteDock: React.FC<SuiteDockProps> = ({ currentProductId }) => {
             }}
             title="Click to manage subscription plan & test client personas"
           >
-            <span>🏢</span>
+            <IconBuilding size={13} style={{ color: '#38bdf8' }} />
             <span>{profile.tenantName}</span>
             <span style={{ background: '#1e293b', color: '#38bdf8', fontSize: '9px', padding: '1px 4px', borderRadius: '3px' }}>
               {profile.licensedProducts.length} Licensed
@@ -396,7 +409,15 @@ export const SuiteDock: React.FC<SuiteDockProps> = ({ currentProductId }) => {
             }}
             title={profile.mode === 'suite' ? 'Click to simulate Standalone Tool Client' : 'Click to simulate Multi-Product Suite Client'}
           >
-            {profile.mode === 'suite' ? '🌐 Suite View' : '📦 Standalone View'}
+            {profile.mode === 'suite' ? (
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                <IconGlobe size={11} /> Suite View
+              </span>
+            ) : (
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                <IconPackage size={11} /> Standalone View
+              </span>
+            )}
           </button>
         </div>
       </div>
@@ -442,7 +463,7 @@ export const SuiteDock: React.FC<SuiteDockProps> = ({ currentProductId }) => {
                 onClick={() => setIsMenuOpen(false)}
                 style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '18px', cursor: 'pointer' }}
               >
-                ✕
+                <IconX size={16} />
               </button>
             </div>
 
@@ -469,7 +490,7 @@ export const SuiteDock: React.FC<SuiteDockProps> = ({ currentProductId }) => {
                   >
                     <div>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                        <span style={{ fontSize: '24px' }}>{prod.icon}</span>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', color: isCurrent ? '#38bdf8' : '#cbd5e1' }}><ProductIcon productId={prod.id} size={24} /></span>
                         <span style={{ fontSize: '10px', color: '#64748b', background: '#090d16', padding: '2px 6px', borderRadius: '4px', fontFamily: 'monospace' }}>
                           Port {prod.port}
                         </span>
@@ -485,11 +506,15 @@ export const SuiteDock: React.FC<SuiteDockProps> = ({ currentProductId }) => {
                         </span>
                       ) : isLicensed ? (
                         <span style={{ fontSize: '10px', fontWeight: 700, background: 'rgba(16, 185, 129, 0.15)', color: '#10b981', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '2px 6px', borderRadius: '4px' }}>
-                          1-Click Launch ↗
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                          1-Click Launch <IconExternalLink size={10} />
+                        </span>
                         </span>
                       ) : (
                         <span style={{ fontSize: '10px', fontWeight: 700, background: 'rgba(245, 158, 11, 0.15)', color: '#f59e0b', border: '1px solid rgba(245, 158, 11, 0.3)', padding: '2px 6px', borderRadius: '4px' }}>
-                          🔒 Upgrade to Unlock
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                          <IconLock size={10} /> Upgrade to Unlock
+                        </span>
                         </span>
                       )}
                     </div>
@@ -537,7 +562,7 @@ export const SuiteDock: React.FC<SuiteDockProps> = ({ currentProductId }) => {
                   Manage Subscription & Client Tier
                 </h3>
               </div>
-              <button onClick={() => setIsPlanModalOpen(false)} style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '18px', cursor: 'pointer' }}>✕</button>
+              <button onClick={() => setIsPlanModalOpen(false)} style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '18px', cursor: 'pointer' }}><IconX size={16} /></button>
             </div>
 
             <p style={{ color: '#94a3b8', fontSize: '12px', marginBottom: '16px', lineHeight: 1.5 }}>
@@ -563,7 +588,7 @@ export const SuiteDock: React.FC<SuiteDockProps> = ({ currentProductId }) => {
                     fontSize: '12px',
                   }}
                 >
-                  <strong style={{ display: 'block', color: '#f59e0b' }}>🚛 Solo Owner-Operator</strong>
+                  <strong style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#f59e0b' }}><IconTruck size={14} /> Solo Owner-Operator</strong>
                   <span style={{ fontSize: '10px', color: '#94a3b8' }}>Only 1 product licensed (Standalone)</span>
                 </button>
 
@@ -580,7 +605,7 @@ export const SuiteDock: React.FC<SuiteDockProps> = ({ currentProductId }) => {
                     fontSize: '12px',
                   }}
                 >
-                  <strong style={{ display: 'block', color: '#10b981' }}>📊 Broker & Dispatcher</strong>
+                  <strong style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#10b981' }}><IconFileText size={14} /> Broker & Dispatcher</strong>
                   <span style={{ fontSize: '10px', color: '#94a3b8' }}>P01 Cargo Fit + P02 Pricing</span>
                 </button>
 
@@ -597,7 +622,7 @@ export const SuiteDock: React.FC<SuiteDockProps> = ({ currentProductId }) => {
                     fontSize: '12px',
                   }}
                 >
-                  <strong style={{ display: 'block', color: '#818cf8' }}>🛡️ Safety & Telematics</strong>
+                  <strong style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#818cf8' }}><IconShieldAlert size={14} /> Safety & Telematics</strong>
                   <span style={{ fontSize: '10px', color: '#94a3b8' }}>P03 HOS Planner + P05 Telematics</span>
                 </button>
 
@@ -614,7 +639,7 @@ export const SuiteDock: React.FC<SuiteDockProps> = ({ currentProductId }) => {
                     fontSize: '12px',
                   }}
                 >
-                  <strong style={{ display: 'block', color: '#38bdf8' }}>🌐 Enterprise Fleet Suite</strong>
+                  <strong style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#38bdf8' }}><IconGlobe size={14} /> Enterprise Fleet Suite</strong>
                   <span style={{ fontSize: '10px', color: '#94a3b8' }}>All 6 platform products unlocked</span>
                 </button>
               </div>
@@ -636,7 +661,7 @@ export const SuiteDock: React.FC<SuiteDockProps> = ({ currentProductId }) => {
                           checked={checked}
                           onChange={() => toggleProductLicense(prod.id)}
                         />
-                        <span>{prod.icon} {prod.name}</span>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}><ProductIcon productId={prod.id} size={14} /> {prod.name}</span>
                       </span>
                       <span style={{ color: checked ? '#10b981' : '#64748b', fontSize: '11px', fontWeight: 600 }}>
                         {checked ? 'Licensed' : 'Locked'}
@@ -698,7 +723,7 @@ export const SuiteDock: React.FC<SuiteDockProps> = ({ currentProductId }) => {
               PRODUCT UPSELL GATEWAY
             </span>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', margin: '10px 0 14px' }}>
-              <span style={{ fontSize: '32px' }}>{upsellProduct.icon}</span>
+              <span style={{ display: 'inline-flex', alignItems: 'center', color: '#38bdf8' }}><ProductIcon productId={upsellProduct.id} size={32} /></span>
               <div>
                 <h3 style={{ color: '#fff', fontSize: '18px', fontWeight: 800 }}>{upsellProduct.name}</h3>
                 <span style={{ color: '#94a3b8', fontSize: '11px' }}>{upsellProduct.category.toUpperCase()} MODULE</span>
@@ -741,7 +766,9 @@ export const SuiteDock: React.FC<SuiteDockProps> = ({ currentProductId }) => {
                   cursor: 'pointer',
                 }}
               >
-                🚀 Activate 14-Day Free Trial
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                  <IconSparkles size={16} /> Activate 14-Day Free Trial
+                </span>
               </button>
             </div>
           </div>

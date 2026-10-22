@@ -34,20 +34,23 @@ describe('GLEC Framework v3.0 & EPA SmartWay Carbon Insetting Engine', () => {
     expect(result.ttwKgCO2e).toBe(0); // 0 tailpipe biogenic emissions
     expect(result.insettingReductionPct).toBeGreaterThanOrEqual(85);
     expect(result.avoidedScope3KgCO2e).toBeGreaterThan(1400);
-    expect(result.smartWayPartnerCategory).toBe('SmartWay High Performer (Top Tier)');
+    expect(result.indicativeScenarioCategory).toBe('Substantial Decarbonization Scenario (≥50%)');
   });
 
-  it('computes Class 8 Battery Electric (BEV) upstream grid emissions and savings', () => {
+  it('computes Class 8 Battery Electric (BEV) upstream grid emissions and savings using multiplication (miles * kWh/mi)', () => {
     const bevTrip: CarbonTripInput = {
       ...standardTrip,
-      fuelEconomyMpg: 2.1, // 2.1 kWh/mi
+      kwhPerMile: 2.1, // 2.1 kWh/mi consumption
       selectedFuel: 'battery_electric',
     };
     const result = calculateCarbonFootprint(bevTrip);
 
+    expect(result.fuelUnit).toBe('kWh');
+    expect(result.fuelConsumedTotal).toBe(900 * 2.1); // 1,890 kWh total consumption
     expect(result.ttwKgCO2e).toBe(0);
-    expect(result.wttKgCO2e).toBeGreaterThan(0);
+    expect(result.wttKgCO2e).toBeCloseTo((1890 * 380) / 1000, 0); // ~718 kg CO2e
     expect(result.insettingReductionPct).toBeGreaterThan(50);
+    expect(result.verificationStandard).toContain('Scenario Estimator');
   });
 
   it('accurately accounts for auxiliary reefer fuel consumption and deadhead miles', () => {

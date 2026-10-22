@@ -976,10 +976,10 @@ export const Interactive3DTeardown: React.FC<Interactive3DTeardownProps> = ({
               className="teardown-range-slider"
             />
             <div className="slider-ticks">
-              <span onClick={() => setExplodePct(0)}>0% (Fitted)</span>
-              <span onClick={() => setExplodePct(35)}>35% (Inspection)</span>
-              <span onClick={() => setExplodePct(70)}>70% (Teardown)</span>
-              <span onClick={() => setExplodePct(100)}>100% (Exploded)</span>
+              <button type="button" onClick={() => setExplodePct(0)}>0% (Fitted)</button>
+              <button type="button" onClick={() => setExplodePct(35)}>35% (Inspection)</button>
+              <button type="button" onClick={() => setExplodePct(70)}>70% (Teardown)</button>
+              <button type="button" onClick={() => setExplodePct(100)}>100% (Exploded)</button>
             </div>
           </div>
 

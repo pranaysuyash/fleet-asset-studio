@@ -1930,13 +1930,26 @@ button, input, select {
   color: var(--text-dim);
 }
 
-.slider-ticks span {
+.slider-ticks span,
+.slider-ticks button {
   cursor: pointer;
   transition: color 0.15s ease;
+  background: none;
+  border: none;
+  padding: 1px 3px;
+  font: inherit;
+  color: var(--text-dim);
 }
 
-.slider-ticks span:hover {
+.slider-ticks span:hover,
+.slider-ticks button:hover {
   color: var(--accent-cyan);
+}
+
+.slider-ticks button:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 /* Slicing Buttons */
@@ -2592,12 +2605,25 @@ button, input, select {
   color: var(--text-dim);
 }
 
-.slider-tick-labels span {
+.slider-tick-labels span,
+.slider-tick-labels button {
   cursor: pointer;
+  background: none;
+  border: none;
+  padding: 1px 2px;
+  font: inherit;
+  color: var(--text-dim);
 }
 
-.slider-tick-labels span:hover {
+.slider-tick-labels span:hover,
+.slider-tick-labels button:hover {
   color: var(--accent-cyan);
+}
+
+.slider-tick-labels button:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 /* Toggles Row */

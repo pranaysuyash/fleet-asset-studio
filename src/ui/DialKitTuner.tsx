@@ -192,10 +192,10 @@ export const DialKitTuner: React.FC<DialKitTunerProps> = ({
                   className="dialkit-slider explode-slider"
                 />
                 <div className="slider-tick-labels">
-                  <span onClick={() => onUpdateExplode(0)}>0% Fitted</span>
-                  <span onClick={() => onUpdateExplode(35)}>35% Inspection</span>
-                  <span onClick={() => onUpdateExplode(70)}>70% Separation</span>
-                  <span onClick={() => onUpdateExplode(100)}>100% Exploded</span>
+                  <button type="button" onClick={() => onUpdateExplode(0)}>0% Fitted</button>
+                  <button type="button" onClick={() => onUpdateExplode(35)}>35% Inspection</button>
+                  <button type="button" onClick={() => onUpdateExplode(70)}>70% Separation</button>
+                  <button type="button" onClick={() => onUpdateExplode(100)}>100% Exploded</button>
                 </div>
               </div>
 

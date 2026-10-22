@@ -90,6 +90,21 @@ describe('Spatial Fit Calculation', () => {
     // but length is 480"
     expect(fit.doorClearance).toBeDefined();
   });
+
+  it('enforces 0 placed units and empty grid placements when package height exceeds vehicle interior or door aperture', () => {
+    // Create an oversized cargo package that exceeds dry van door height (115" height vs 108" door)
+    const oversizedPkg = {
+      ...gmaPallet,
+      id: 'oversized-test-tall',
+      dims: { lengthIn: 48, widthIn: 40, heightIn: 115 },
+    };
+    const fit = computeSpatialFit(dryVan, oversizedPkg);
+    expect(fit.doorClearance.fits).toBe(false);
+    expect(fit.placedUnits).toBe(0);
+    expect(fit.maxFloorUnits).toBe(0);
+    expect(fit.gridPlacements.length).toBe(0);
+    expect(fit.limitingFactor).toBe('door_dimension');
+  });
 });
 
 describe('Temporal Dynamics Simulation', () => {

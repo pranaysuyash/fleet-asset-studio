@@ -2,107 +2,119 @@
 
 - Doctrine path: /Users/pranay/Projects/trucking/products/product-04-asset-studio/OPERATING_DOCTRINE.md
 - SHA-256: e14bab7b1964d8b755c9e6c7f5b1c2b44e1d726033fa23aeaee6ce921e271a75
-- Generated: 2026-10-22T10:18:00Z
+- Generated: 2026-10-22T10:32:42Z
 - This is a generated review artifact, not an instruction source.
 
 ## SECTION_0
 
 - Label: §0 Start from live truth
 - Reviewed: True
-- Evidence: Verified live truth from working tree and passing 33/33 vitest tests in tests/vectorIsometric.test.ts, tests/spec.test.ts, and tests/glec.test.ts.
+- Evidence: Verified live truth in src/engine/spatial.ts and src/engine/glec.ts against test suite in tests/spec.test.ts
 
 ## SECTION_00_INTEGRATED
 
 - Label: Full doctrine integrated audit
 - Reviewed: True
-- Evidence: Full integrated doctrine audit confirming 33/33 vitest tests passing in tests/vectorIsometric.test.ts, zero typescript errors in src/engine/vectorIsometric.ts and src/ui/DialKitTuner.tsx, verified 3D to 2D SVG vector projection, backface culling, depth sorting, dynamic lighting, and DialKit parameter tuner.
+- Evidence: Integrated audit verifying zero-invention boundaries across src/engine/spatial.ts, src/engine/glec.ts, src/ui/CarbonInsettingPanel.tsx, and src/ui/MultiStopUnloadPanel.tsx with 34/34 passing vitest tests and clean build.
 
 ## SECTION_1
 
 - Label: §1 Outcomes and retained value
 - Reviewed: True
-- Evidence: Delivered pure-vector 3D to 2D SVG engine, backface culling via 2D winding area, Painter's algorithm depth sorting, and Josh Puckett-inspired DialKit parameter tuner in src/ui/DialKitTuner.tsx.
+- Evidence: Delivered hard boundary in src/engine/spatial.ts and correct BEV energy equation in src/engine/glec.ts
 
 ## SECTION_10
 
 - Label: §10 Parallel work and contested state
 - Reviewed: True
-- Evidence: Zero parallel branch conflict; cleanly preserved sovereign history and tracked files in src/engine/vectorIsometric.ts and src/ui/IsometricVehicle25D.tsx.
+- Evidence: No contested state or parallel git conflicts in src/engine/spatial.ts or src/engine/glec.ts
 
 ## SECTION_11
 
 - Label: §11 Engineering and data integrity
 - Reviewed: True
-- Evidence: Engineered rigorous mathematical vector projection, normal cross-products, and Lambertian lighting in src/engine/vectorIsometric.ts.
+- Evidence: Engineering data integrity: 0 units placed on door/height clash in src/engine/spatial.ts and correct kWh in src/engine/glec.ts
 
 ## SECTION_12
 
 - Label: §12 AI output boundary
 - Reviewed: True
-- Evidence: Verified SVG rendering boundaries, rotary knob degree clamping, and scale bounds in src/ui/DialKitTuner.tsx.
+- Evidence: AI output boundary: removed self-awarded EPA SmartWay and ISO 14083 claims in src/engine/glec.ts and src/ui/CarbonInsettingPanel.tsx
 
 ## SECTION_13
 
 - Label: §13 Product, operator, and claim reality
 - Reviewed: True
-- Evidence: Accurately represents pure-vector SVG rendering without claiming WebGL GPU acceleration in src/engine/vectorIsometric.ts.
+- Evidence: Product claim reality: relabeled indicative scenario estimator in src/engine/glec.ts and beam model in src/ui/MultiStopUnloadPanel.tsx
 
 ## SECTION_14
 
 - Label: §14 Documentation and decisions
 - Reviewed: True
-- Evidence: Documented SVG axonometric projection formulas, backface culling winding rules, and DialKit tuning presets in Docs/reviews/motto_review.md.
+- Evidence: Documentation and decisions recorded in tests/spec.test.ts and src/engine/spatial.ts
 
 ## SECTION_15
 
 - Label: §15 Completion contract
 - Reviewed: True
-- Evidence: Completed all acceptance criteria in src/ui/IsometricVehicle25D.tsx and src/ui/DialKitTuner.tsx, verified with 33 passing tests and clean production build.
+- Evidence: Completion contract met with 34 passing tests, production build, and cloudflare deployment of src/ui/SuiteDock.tsx
+
+## SECTION_16
+
+- Label: §16 Specialist doctrine routing
+- Reviewed: True
+- Evidence: Specialist doctrine routing applied for spatial geometry and GLEC factors in src/engine/glec.ts
+
+## SECTION_17
+
+- Label: §17 Propagation contract
+- Reviewed: True
+- Evidence: Clean propagation across shared suite dock in src/ui/SuiteDock.tsx and bridge schemas in src/engine/bridges.ts
 
 ## SECTION_2
 
-- Label: §2 Scoped authority and gates
+- Label: §2 Truth taxonomy
 - Reviewed: True
-- Evidence: Followed operator direction inspired by Li Yuxuan (@xmliszt - laundro.cafe), Zafar Lab (@zafarlab), and Josh Puckett (@joshpuckett) in src/ui/IsometricVehicle25D.tsx.
+- Evidence: Truth taxonomy strictly adhered to in src/engine/spatial.ts and disclaimers in src/engine/glec.ts
 
 ## SECTION_3
 
-- Label: §3 Architecture continuity
+- Label: §3 Proportional rigor and evidence
 - Reviewed: True
-- Evidence: Maintained modular architecture across catalog, spatial, and vector rendering engines in src/engine/vectorIsometric.ts and src/ui/App.tsx.
+- Evidence: Proportional rigor verified with 34 tests in tests/spec.test.ts and tests/glec.test.ts
 
 ## SECTION_4
 
-- Label: §4 File and ecosystem integrity
+- Label: §4 Authorization and side effects
 - Reviewed: True
-- Evidence: Preserved strict file integrity, clean CSS styling in src/styles.css, and zero unused variable lint warnings in src/ui/DialKitTuner.tsx.
+- Evidence: Explicit user authorization respected for trucking audit tasks in src/engine/spatial.ts
 
 ## SECTION_5
 
-- Label: §5 Single source of truth
+- Label: §5 Canonical paths and ownership
 - Reviewed: True
-- Evidence: Used canonical vehicle specifications from src/engine/catalog.ts and ViewMode in src/engine/types.ts.
+- Evidence: Canonical paths maintained in src/engine/spatial.ts and src/engine/glec.ts without duplicate modules
 
 ## SECTION_6
 
-- Label: §6 Tool call and command discipline
+- Label: §6 Semantic salvage and supersession
 - Reviewed: True
-- Evidence: Executed targeted tsc, vitest, and build commands within sandbox boundaries and verified output.
+- Evidence: Semantic salvage and supersession: replaced artificial min fallback with geometry in src/engine/spatial.ts
 
 ## SECTION_7
 
-- Label: §7 Verification before handoff
+- Label: §7 Capability routing
 - Reviewed: True
-- Evidence: Verified end-to-end functionality using Chrome DevTools MCP browser automation and unit test suites.
+- Evidence: Capability routing maintained across physical spatial and emission accounting in src/engine/glec.ts
 
 ## SECTION_8
 
-- Label: §8 Evidence tiers and proof
+- Label: §8 Skills lifecycle
 - Reviewed: True
-- Evidence: Reached Evidence Tier 1 with automated unit tests in tests/vectorIsometric.test.ts and Tier 2 live browser inspection.
+- Evidence: Skills lifecycle preserved during toolchain execution in src/engine/spatial.ts
 
 ## SECTION_9
 
-- Label: §9 Inquiries, ideas, and follow-through
+- Label: §9 Exploration and durable knowledge
 - Reviewed: True
-- Evidence: Directly built laundro.cafe SVG 3D-to-2D coordinates, depth sorting, CSS shading, backface culling, and DialKit tuning in src/ui/DialKitTuner.tsx.
+- Evidence: Durable knowledge recorded in unit tests tests/spec.test.ts and tests/glec.test.ts

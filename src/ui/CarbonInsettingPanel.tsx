@@ -39,9 +39,9 @@ export function CarbonInsettingPanel({
     <div className="panel" style={{ marginTop: 24 }}>
       <div className="panel-h" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <b>🌱 GLEC Framework v3.0 / EPA SmartWay Carbon Insetting Engine</b>
+          <b>🌱 GLEC Framework v3.0 Carbon Insetting Scenario Estimator</b>
           <span style={{ marginLeft: 10, fontSize: 12, color: '#94a3b8' }}>
-            ISO 14083 Verified Scope 1 &amp; Scope 3 Decarbonization
+            Indicative Scope 1 &amp; Scope 3 Decarbonization Modeling
           </span>
         </div>
         <button
@@ -57,7 +57,7 @@ export function CarbonInsettingPanel({
             cursor: 'pointer',
           }}
         >
-          📜 Generate Insetting Certificate
+          📜 Generate Scenario Summary
         </button>
       </div>
 
@@ -176,12 +176,12 @@ export function CarbonInsettingPanel({
         </div>
 
         <div style={{ background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: 12 }}>
-          <div style={{ fontSize: 11, color: '#94a3b8', textTransform: 'uppercase' }}>EPA SmartWay Rating</div>
-          <div style={{ fontSize: 14, fontWeight: 700, color: footprint.insettingReductionPct >= 50 ? '#10b981' : '#f59e0b', marginTop: 8 }}>
-            ★ {footprint.smartWayPartnerCategory}
+          <div style={{ fontSize: 11, color: '#94a3b8', textTransform: 'uppercase' }}>Emissions Scenario Tier</div>
+          <div style={{ fontSize: 13, fontWeight: 700, color: footprint.insettingReductionPct >= 50 ? '#10b981' : '#f59e0b', marginTop: 8 }}>
+            ★ {footprint.indicativeScenarioCategory}
           </div>
-          <div style={{ fontSize: 11, color: '#64748b', marginTop: 4 }}>
-            Standard: ISO 14083 / GLEC v3.0
+          <div style={{ fontSize: 10, color: '#64748b', marginTop: 4 }}>
+            Standard: {footprint.verificationStandard}
           </div>
         </div>
       </div>
@@ -232,9 +232,9 @@ export function CarbonInsettingPanel({
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', borderBottom: '1px solid #1e293b', paddingBottom: 14 }}>
               <div>
-                <div style={{ color: '#10b981', fontWeight: 800, fontSize: 13, letterSpacing: 1 }}>OFFICIAL ESG SCOPE 3 VERIFICATION</div>
-                <h3 style={{ margin: '4px 0', fontSize: 20, color: '#f8fafc' }}>Certified Carbon Insetting Certificate</h3>
-                <div style={{ fontSize: 11, color: '#94a3b8' }}>Conforming to ISO 14083 &amp; GLEC Framework v3.0</div>
+                <div style={{ color: '#10b981', fontWeight: 800, fontSize: 13, letterSpacing: 1 }}>INDICATIVE ESG SCENARIO ESTIMATE</div>
+                <h3 style={{ margin: '4px 0', fontSize: 18, color: '#f8fafc' }}>Carbon Insetting Scenario Summary</h3>
+                <div style={{ fontSize: 11, color: '#94a3b8' }}>Aligned with GLEC Framework v3.0 Methodology</div>
               </div>
               <button
                 onClick={() => setShowCertificate(false)}
@@ -259,14 +259,17 @@ export function CarbonInsettingPanel({
                   <b style={{ color: '#10b981' }}>{footprint.wtwKgCO2e.toLocaleString()} kg CO₂e</b>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #334155', paddingTop: 6, marginTop: 6 }}>
-                  <span>Net Verified Insetting Credit:</span>
+                  <span>Net Estimated Avoided Emissions:</span>
                   <b style={{ color: '#34d399', fontSize: 15 }}>-{footprint.avoidedScope3KgCO2e.toLocaleString()} kg CO₂e ({footprint.insettingReductionPct}%)</b>
                 </div>
               </div>
 
-              <div style={{ fontSize: 11, color: '#64748b' }}>
-                Batch Tracking ID: <code>GLEC-INSET-{Math.abs(footprint.totalPayloadTonMiles)}-{Date.now().toString(36).toUpperCase()}</code><br />
-                EPA SmartWay Category: <b>{footprint.smartWayPartnerCategory}</b>
+              <div style={{ fontSize: 11, color: '#64748b', lineHeight: 1.4 }}>
+                Batch Tracking ID: <code>GLEC-SCENARIO-{Math.abs(footprint.totalPayloadTonMiles)}-{Date.now().toString(36).toUpperCase()}</code><br />
+                Scenario Classification: <b>{footprint.indicativeScenarioCategory}</b><br />
+                <span style={{ fontSize: 10, color: '#94a3b8' }}>
+                  * Indicative calculation based on GLEC v3.0 default factors. Does not constitute third-party ISO 14083 certification or official EPA SmartWay recognition.
+                </span>
               </div>
             </div>
 

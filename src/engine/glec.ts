@@ -55,9 +55,9 @@ export const GLEC_EMISSION_FACTORS: Record<FuelEnergyType, FuelEmissionsFactor> 
     energyType: 'battery_electric',
     unit: 'kWh',
     ttwGramsPerUnit: 0,
-    wttGramsPerUnit: 798,   // 2.1 kWh/mi consumption * 380 gCO2e/kWh
-    wtwGramsPerUnit: 798,
-    co2ReductionVsDieselPct: 65.5,
+    wttGramsPerUnit: 380,   // US Grid Mix average: 380 gCO2e/kWh
+    wtwGramsPerUnit: 380,
+    co2ReductionVsDieselPct: 59.7, // ~60% reduction vs fossil diesel baseline at 2.1 kWh/mi vs 6.5 MPG
   },
 };
 
@@ -65,7 +65,8 @@ export interface CarbonTripInput {
   loadedMiles: number;
   emptyDeadheadMiles: number;
   cargoPayloadTons: number; // US short tons (2,000 lbs)
-  fuelEconomyMpg: number; // or miles/kWh for BEV
+  fuelEconomyMpg: number; // MPG for liquid/gas fuels, or kWh/mi for BEV
+  kwhPerMile?: number; // Electric truck consumption rate (default: 2.1 kWh/mi)
   selectedFuel: FuelEnergyType;
   isReeferActive?: boolean;
   reeferHours?: number;
@@ -93,13 +94,16 @@ export interface CarbonFootprintResult {
   gramsCO2ePerTonMile: number;
   gramsCO2ePerTonneKm: number;
 
-  // Verification & Regulatory
-  smartWayPartnerCategory: 'SmartWay High Performer (Top Tier)' | 'SmartWay Active Fleet';
+  // Scenario Classification (Indicative — Software cannot self-award statutory certifications)
+  smartWayPartnerCategory: 'Indicative High-Reduction Scenario (Not EPA Award)' | 'Standard Baseline Scenario';
+  indicativeScenarioCategory: 'Substantial Decarbonization Scenario (≥50%)' | 'Baseline Emissions Scenario';
   verificationStandard: string;
 }
 
 /**
- * Calculates GLEC v3.0 / ISO 14083 compliant freight emissions and insetting credits.
+ * Calculates GLEC v3.0-aligned indicative freight emissions scenarios and insetting estimates.
+ * NOTE: Software calculations are scenario estimates and do not constitute third-party
+ * ISO 14083 verification or official EPA SmartWay High Performer awards.
  */
 export function calculateCarbonFootprint(input: CarbonTripInput): CarbonFootprintResult {
   const totalMiles = input.loadedMiles + input.emptyDeadheadMiles;
@@ -110,16 +114,29 @@ export function calculateCarbonFootprint(input: CarbonTripInput): CarbonFootprin
   const factor = GLEC_EMISSION_FACTORS[input.selectedFuel];
   const baselineDiesel = GLEC_EMISSION_FACTORS['diesel_ulsd'];
 
-  // Base traction fuel consumption
-  let fuelConsumedTotal = totalMiles / Math.max(1.0, input.fuelEconomyMpg);
-  // Add auxiliary reefer fuel (approx 0.6 gal/hr diesel for 53' reefer)
-  if (input.isReeferActive && input.reeferHours && input.reeferHours > 0) {
-    fuelConsumedTotal += input.reeferHours * 0.6;
+  // Base traction fuel/energy consumption
+  let fuelConsumedTotal = 0;
+  if (input.selectedFuel === 'battery_electric') {
+    // For Class 8 BEV: total energy (kWh) = totalMiles * kWh/mile (multiplication, not division)
+    const kwhPerMile = input.kwhPerMile ?? (input.fuelEconomyMpg || 2.1);
+    fuelConsumedTotal = totalMiles * kwhPerMile;
+    // Auxiliary electric reefer standby draw (~3.5 kW electric standby)
+    if (input.isReeferActive && input.reeferHours && input.reeferHours > 0) {
+      fuelConsumedTotal += input.reeferHours * 3.5;
+    }
+  } else {
+    // Liquid / gaseous fuels: totalMiles / MPG
+    fuelConsumedTotal = totalMiles / Math.max(1.0, input.fuelEconomyMpg);
+    // Add auxiliary reefer fuel (approx 0.6 gal/hr diesel for 53' reefer)
+    if (input.isReeferActive && input.reeferHours && input.reeferHours > 0) {
+      fuelConsumedTotal += input.reeferHours * 0.6;
+    }
   }
   fuelConsumedTotal = Number(fuelConsumedTotal.toFixed(2));
 
-  // Baseline diesel fuel consumption (same distance & MPG)
-  let baselineFuelGal = totalMiles / Math.max(1.0, input.fuelEconomyMpg);
+  // Baseline fossil diesel fuel consumption (same distance & standard 6.5 MPG baseline)
+  const baselineDieselMpg = input.selectedFuel === 'battery_electric' ? 6.5 : Math.max(1.0, input.fuelEconomyMpg);
+  let baselineFuelGal = totalMiles / baselineDieselMpg;
   if (input.isReeferActive && input.reeferHours && input.reeferHours > 0) {
     baselineFuelGal += input.reeferHours * 0.6;
   }
@@ -142,6 +159,8 @@ export function calculateCarbonFootprint(input: CarbonTripInput): CarbonFootprin
     : 0;
   const gramsCO2ePerTonneKm = Number((gramsCO2ePerTonMile / 1.459972).toFixed(1));
 
+  const isSubstantialReduction = insettingReductionPct >= 50;
+
   return {
     fuelType: input.selectedFuel,
     fuelName: factor.name,
@@ -157,9 +176,12 @@ export function calculateCarbonFootprint(input: CarbonTripInput): CarbonFootprin
     insettingReductionPct,
     gramsCO2ePerTonMile,
     gramsCO2ePerTonneKm,
-    smartWayPartnerCategory: insettingReductionPct >= 50
-      ? 'SmartWay High Performer (Top Tier)'
-      : 'SmartWay Active Fleet',
-    verificationStandard: 'ISO 14083 / GLEC Framework v3.0 / EPA SmartWay',
+    smartWayPartnerCategory: isSubstantialReduction
+      ? 'Indicative High-Reduction Scenario (Not EPA Award)'
+      : 'Standard Baseline Scenario',
+    indicativeScenarioCategory: isSubstantialReduction
+      ? 'Substantial Decarbonization Scenario (≥50%)'
+      : 'Baseline Emissions Scenario',
+    verificationStandard: 'GLEC v3.0-Aligned Scenario Estimator (Indicative — Not ISO 14083 / EPA Certified)',
   };
 }

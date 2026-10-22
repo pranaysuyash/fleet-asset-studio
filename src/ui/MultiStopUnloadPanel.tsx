@@ -50,7 +50,7 @@ export const MultiStopUnloadPanel: React.FC<MultiStopUnloadPanelProps> = ({ vehi
         <div className="title-group">
           <h3>🚚 Multi-Stop Drop Sequence & Dynamic CG Axle Simulator</h3>
           <span className="subtitle">
-            Detects forward drive-axle overload hazards as rear freight is unloaded across delivery stops
+            Estimated Axle Load (Simplified Beam Model) — Detects forward drive-axle overload hazards as rear freight is unloaded across delivery stops. Indicative static model, not certified scale weight.
           </span>
         </div>
         <div className="active-stage-chip">

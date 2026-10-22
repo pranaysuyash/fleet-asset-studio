@@ -38,8 +38,10 @@ export function computeSpatialFit(
   const fitsHeight = remainingHeightIn >= 0;
 
   // Stacking calculation
-  const maxTiersByHeight = Math.max(1, Math.floor(interiorHeightIn / pkgH));
-  const effectiveTiers = Math.max(1, Math.min(pkg.maxStackTiers, maxTiersByHeight));
+  const maxTiersByHeight = Math.floor(interiorHeightIn / pkgH);
+  const effectiveTiers = (fitsDoor && fitsHeight)
+    ? Math.min(pkg.maxStackTiers, Math.max(0, maxTiersByHeight))
+    : 0;
 
   // Orientation 1: normal (Length along trailer length, Width along trailer width)
   const cols1 = Math.floor(interiorWidthIn / pkgW);
@@ -53,7 +55,7 @@ export function computeSpatialFit(
 
   // Choose best arrangement
   const useOrientation1 = floorUnits1 >= floorUnits2;
-  const bestFloorUnits = useOrientation1 ? floorUnits1 : floorUnits2;
+  const bestFloorUnits = (fitsDoor && fitsHeight) ? (useOrientation1 ? floorUnits1 : floorUnits2) : 0;
   const activeCols = useOrientation1 ? cols1 : cols2;
   const activeRows = useOrientation1 ? rows1 : rows2;
   const activeUnitWidth = useOrientation1 ? pkgW : pkgL;
@@ -73,10 +75,17 @@ export function computeSpatialFit(
     placedUnits = Math.min(placedUnits, quantityOverride);
   }
 
+  // Hard physical boundary: If package exceeds door aperture or interior height, 0 units can be placed.
+  if (!fitsDoor || !fitsHeight) {
+    placedUnits = 0;
+  }
+
   // Determine limiting factor
   let limitingFactor: SpatialFitResult['limitingFactor'] = 'none';
   if (!fitsDoor) {
     limitingFactor = 'door_dimension';
+  } else if (!fitsHeight) {
+    limitingFactor = 'volume';
   } else if (placedUnits === maxUnitsByWeight && maxUnitsByWeight < maxStackedUnits) {
     limitingFactor = 'weight';
   } else if (placedUnits === maxStackedUnits) {
