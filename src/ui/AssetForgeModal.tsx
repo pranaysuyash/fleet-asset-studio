@@ -182,10 +182,10 @@ export const AssetForgeModal: React.FC<AssetForgeModalProps> = ({
       <div className="modal-card" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <div className="modal-title-group">
-            <h2>🛠 Asset Forge — Manual Asset Creator</h2>
+            <h2>Asset Forge — Manual Asset Creator</h2>
             <span className="subtitle">Author custom commercial vehicles, containers, and packaging specifications</span>
           </div>
-          <button className="modal-close-btn" onClick={onClose}>✕</button>
+          <button className="modal-close-btn" onClick={onClose}>Close</button>
         </div>
 
         {/* Tab Switcher */}
@@ -194,13 +194,13 @@ export const AssetForgeModal: React.FC<AssetForgeModalProps> = ({
             className={`modal-tab-btn ${tab === 'vehicle' ? 'active' : ''}`}
             onClick={() => setTab('vehicle')}
           >
-            🚛 New Custom Vehicle
+            New Custom Vehicle
           </button>
           <button
             className={`modal-tab-btn ${tab === 'package' ? 'active' : ''}`}
             onClick={() => setTab('package')}
           >
-            📦 New Custom Package / Container
+            New Custom Package / Container
           </button>
         </div>
 
@@ -415,7 +415,7 @@ export const AssetForgeModal: React.FC<AssetForgeModalProps> = ({
                 Cancel
               </button>
               <button type="submit" className="btn-primary">
-                ✓ Save & Forge Vehicle
+                Save & Forge Vehicle
               </button>
             </div>
           </form>
@@ -544,7 +544,7 @@ export const AssetForgeModal: React.FC<AssetForgeModalProps> = ({
                 Cancel
               </button>
               <button type="submit" className="btn-primary">
-                ✓ Save & Forge Package
+                Save & Forge Package
               </button>
             </div>
           </form>

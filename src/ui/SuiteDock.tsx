@@ -1,3 +1,4 @@
+import productRegistry from '../suite/productRegistry.json';
 import React, { useState, useEffect } from 'react';
 import {
   ProductIcon,
@@ -42,104 +43,7 @@ export interface SubproductManifest {
   };
 }
 
-export const CANONICAL_PRODUCTS: SubproductManifest[] = [
-  {
-    id: 'product-01-cargo-fit',
-    name: 'Cargo Fit & 3D Load Optimization',
-    shortName: 'Cargo Fit',
-    code: 'P01',
-    port: 5173,
-    icon: 'P01',
-    description: '3D heuristic cargo packing, Federal Bridge Formula axle distribution, and securement compliance.',
-    category: 'Optimization',
-    routes: { dev: 'http://localhost:5173', cloud: 'https://cargofit.pages.dev' },
-    pricingTier: {
-      tierName: 'Single Vehicle Pro',
-      monthlyPriceUsd: 149,
-      description: 'Unlimited 3D load solves, optical camera scanner, and EDI/VICS BOL exports.',
-    },
-  },
-  {
-    id: 'product-02-freight-pricing',
-    name: 'Freight Pricing & Tactical Dispatch HUD',
-    shortName: 'Freight Pricing',
-    code: 'P02',
-    port: 5174,
-    icon: 'P02',
-    description: 'Carrier cost waterfall, EIA diesel index pegging, 3D digital twins, and broker rate confirmations.',
-    category: 'Pricing',
-    routes: { dev: 'http://localhost:5174', cloud: 'https://freightpricing.pages.dev' },
-    pricingTier: {
-      tierName: 'Tactical Dispatcher HUD',
-      monthlyPriceUsd: 199,
-      description: 'Real-time diesel index escalation, operating ratio speedometer, and instant PDF rate confirmations.',
-    },
-  },
-  {
-    id: 'product-03-hos-planner',
-    name: 'HOS Compliance & Interstate Corridor Legality Planner',
-    shortName: 'HOS Planner',
-    code: 'P03',
-    port: 5175,
-    icon: 'P03',
-    description: 'FMCSA Part 395 statutory hours of service engine, 24-hr ELD logbooks, and corridor simulations.',
-    category: 'Compliance',
-    routes: { dev: 'http://localhost:5175', cloud: 'https://hosdispatch.pages.dev' },
-    pricingTier: {
-      tierName: 'Safety & Compliance Suite',
-      monthlyPriceUsd: 129,
-      description: 'Statutory 11/14/70-hr engine, stepped ELD graph, and team transit simulation.',
-    },
-  },
-  {
-    id: 'product-04-asset-studio',
-    name: 'Fleet & Cargo Asset Studio',
-    shortName: 'Asset Studio',
-    code: 'P04',
-    port: 5176,
-    icon: 'P04',
-    description: 'Commercial vehicle & cargo packaging digital twin catalog, 3D WebGL, 2.5D Isometric, and 2D CAD blueprints.',
-    category: 'Asset Studio',
-    routes: { dev: 'http://localhost:5176', cloud: 'https://trucking-asset-studio.pages.dev' },
-    pricingTier: {
-      tierName: 'Digital Twin Studio',
-      monthlyPriceUsd: 249,
-      description: '20+ vehicle CAD models, 23 packaging twins, dynamic CG axle load shift, and Open Logistics Asset schema export.',
-    },
-  },
-  {
-    id: 'product-05-fleet-telematics',
-    name: 'Fleet Telematics & Real-Time Tracking HUD',
-    shortName: 'Telematics',
-    code: 'P05',
-    port: 5177,
-    icon: 'P05',
-    description: 'SAE J1939 CAN-bus telemetry stream, reefer cold chain data logger, corridor GPS geofencing, and DTC alert diagnostics.',
-    category: 'Telematics',
-    routes: { dev: 'http://localhost:5177', cloud: 'https://fleet-telematics.pages.dev' },
-    pricingTier: {
-      tierName: 'CAN-Bus Telematics Mesh',
-      monthlyPriceUsd: 299,
-      description: 'Real-time J1939 telemetry, Reefer excursions, live corridor tracking, and instant cross-product bridges.',
-    },
-  },
-  {
-    id: 'command-center-portal',
-    name: 'Unified Freight Command Center',
-    shortName: 'Command Center',
-    code: 'P00',
-    port: 5170,
-    icon: 'P00',
-    description: 'Top-level freight lifecycle stepper bringing all 5 subproducts under a unified single pane of glass.',
-    category: 'Orchestration',
-    routes: { dev: 'http://localhost:5170', cloud: 'https://trucking-command-center.pages.dev' },
-    pricingTier: {
-      tierName: 'Enterprise Command Seat',
-      monthlyPriceUsd: 499,
-      description: 'Complete 5-stage lifecycle stepper: Asset Studio → 3D Packing → Pricing → HOS → Live Telematics.',
-    },
-  },
-];
+export const CANONICAL_PRODUCTS = productRegistry as SubproductManifest[];
 
 export function resolveProductUrl(manifest: SubproductManifest): string {
   if (typeof window !== 'undefined') {
@@ -317,18 +221,23 @@ export const SuiteDock: React.FC<SuiteDockProps> = ({ currentProductId }) => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
+        flexWrap: 'wrap',
+        gap: '6px',
         padding: '5px 16px',
         backgroundColor: '#090d16',
         borderBottom: '1px solid #1e293b',
         fontSize: '12px',
         color: '#f8fafc',
-        zIndex: 9999,
+        zIndex: 1000,
         position: 'relative',
+        minHeight: '44px',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           {/* 9-Dots App Switcher Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Open Trucking Platform Suite Switcher"
+            aria-expanded={isMenuOpen}
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -336,7 +245,8 @@ export const SuiteDock: React.FC<SuiteDockProps> = ({ currentProductId }) => {
               backgroundColor: isMenuOpen ? 'rgba(56, 189, 248, 0.2)' : 'rgba(255, 255, 255, 0.05)',
               border: isMenuOpen ? '1px solid #38bdf8' : '1px solid #334155',
               color: isMenuOpen ? '#38bdf8' : '#f8fafc',
-              padding: '3px 8px',
+              padding: '6px 12px',
+              minHeight: '36px',
               borderRadius: '5px',
               cursor: 'pointer',
               fontWeight: 700,
@@ -345,7 +255,7 @@ export const SuiteDock: React.FC<SuiteDockProps> = ({ currentProductId }) => {
             }}
             title="Open Trucking Platform Suite Switcher"
           >
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 3px)', gap: '2px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 3px)', gap: '2px' }} aria-hidden="true">
               <span style={{ width: 3, height: 3, background: 'currentColor', borderRadius: '50%' }} />
               <span style={{ width: 3, height: 3, background: 'currentColor', borderRadius: '50%' }} />
               <span style={{ width: 3, height: 3, background: 'currentColor', borderRadius: '50%' }} />
@@ -372,10 +282,12 @@ export const SuiteDock: React.FC<SuiteDockProps> = ({ currentProductId }) => {
           {/* Tenant Profile / Plan Badge */}
           <button
             onClick={() => setIsPlanModalOpen(true)}
+            aria-label={`Tenant profile: ${profile.tenantName}, ${profile.licensedProducts.length} licensed modules`}
             style={{
               background: 'transparent',
               border: '1px dashed #334155',
-              padding: '2px 8px',
+              padding: '6px 12px',
+              minHeight: '36px',
               borderRadius: '4px',
               color: '#94a3b8',
               fontSize: '11px',
@@ -397,11 +309,13 @@ export const SuiteDock: React.FC<SuiteDockProps> = ({ currentProductId }) => {
           {/* Quick Mode Toggle */}
           <button
             onClick={toggleMode}
+            aria-label={`View mode: ${profile.mode}. Click to toggle between Suite and Standalone view.`}
             style={{
               background: profile.mode === 'suite' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)',
               border: profile.mode === 'suite' ? '1px solid #10b981' : '1px solid #f59e0b',
               color: profile.mode === 'suite' ? '#10b981' : '#f59e0b',
-              padding: '2px 8px',
+              padding: '6px 12px',
+              minHeight: '36px',
               borderRadius: '4px',
               fontSize: '10px',
               fontWeight: 700,
@@ -426,12 +340,15 @@ export const SuiteDock: React.FC<SuiteDockProps> = ({ currentProductId }) => {
       {isMenuOpen && (
         <div
           onClick={() => setIsMenuOpen(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Trucking Platform Suite Switcher"
           style={{
             position: 'fixed',
             inset: 0,
             background: 'rgba(0,0,0,0.7)',
             backdropFilter: 'blur(4px)',
-            zIndex: 10000,
+            zIndex: 1050,
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'flex-start',
@@ -461,7 +378,8 @@ export const SuiteDock: React.FC<SuiteDockProps> = ({ currentProductId }) => {
               </div>
               <button
                 onClick={() => setIsMenuOpen(false)}
-                style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '18px', cursor: 'pointer' }}
+                aria-label="Close suite switcher menu"
+                style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '18px', cursor: 'pointer', minHeight: '36px', minWidth: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
                 <IconX size={16} />
               </button>
@@ -476,6 +394,15 @@ export const SuiteDock: React.FC<SuiteDockProps> = ({ currentProductId }) => {
                   <div
                     key={prod.id}
                     onClick={() => handleProductClick(prod)}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Open ${prod.name} on port ${prod.port}`}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleProductClick(prod);
+                      }
+                    }}
                     style={{
                       background: isCurrent ? 'rgba(56, 189, 248, 0.08)' : '#131d31',
                       border: isCurrent ? '1px solid #38bdf8' : '1px solid #1e293b',
@@ -530,12 +457,15 @@ export const SuiteDock: React.FC<SuiteDockProps> = ({ currentProductId }) => {
       {isPlanModalOpen && (
         <div
           onClick={() => setIsPlanModalOpen(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Manage Subscription & Client Tier"
           style={{
             position: 'fixed',
             inset: 0,
             background: 'rgba(0,0,0,0.75)',
             backdropFilter: 'blur(5px)',
-            zIndex: 10001,
+            zIndex: 1050,
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
@@ -562,7 +492,13 @@ export const SuiteDock: React.FC<SuiteDockProps> = ({ currentProductId }) => {
                   Manage Subscription & Client Tier
                 </h3>
               </div>
-              <button onClick={() => setIsPlanModalOpen(false)} style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '18px', cursor: 'pointer' }}><IconX size={16} /></button>
+              <button
+                onClick={() => setIsPlanModalOpen(false)}
+                aria-label="Close client tier dialog"
+                style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '18px', cursor: 'pointer', minHeight: '36px', minWidth: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              >
+                <IconX size={16} />
+              </button>
             </div>
 
             <p style={{ color: '#94a3b8', fontSize: '12px', marginBottom: '16px', lineHeight: 1.5 }}>
@@ -696,12 +632,15 @@ export const SuiteDock: React.FC<SuiteDockProps> = ({ currentProductId }) => {
       {upsellProduct && (
         <div
           onClick={() => setUpsellProduct(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Product Upgrade Gateway"
           style={{
             position: 'fixed',
             inset: 0,
             background: 'rgba(0,0,0,0.75)',
             backdropFilter: 'blur(5px)',
-            zIndex: 10001,
+            zIndex: 1050,
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
@@ -719,9 +658,18 @@ export const SuiteDock: React.FC<SuiteDockProps> = ({ currentProductId }) => {
               boxShadow: '0 25px 50px rgba(0,0,0,0.9), 0 0 30px rgba(245, 158, 11, 0.2)',
             }}
           >
-            <span style={{ fontSize: '10px', fontWeight: 900, color: '#f59e0b', letterSpacing: '0.1em' }}>
-              PRODUCT UPSELL GATEWAY
-            </span>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              <span style={{ fontSize: '10px', fontWeight: 900, color: '#f59e0b', letterSpacing: '0.1em' }}>
+                PRODUCT UPSELL GATEWAY
+              </span>
+              <button
+                onClick={() => setUpsellProduct(null)}
+                aria-label="Close upgrade dialog"
+                style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '18px', cursor: 'pointer', minHeight: '36px', minWidth: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              >
+                <IconX size={16} />
+              </button>
+            </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', margin: '10px 0 14px' }}>
               <span style={{ display: 'inline-flex', alignItems: 'center', color: '#38bdf8' }}><ProductIcon productId={upsellProduct.id} size={32} /></span>
               <div>

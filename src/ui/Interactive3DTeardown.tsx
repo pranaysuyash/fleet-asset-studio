@@ -913,9 +913,7 @@ export const Interactive3DTeardown: React.FC<Interactive3DTeardownProps> = ({
               <button
                 className="btn-dossier-close"
                 onClick={() => setSelectedComponentId(null)}
-              >
-                ✕
-              </button>
+              >Close</button>
             </div>
 
             <p className="dossier-desc">{activeDossier.description}</p>
@@ -964,7 +962,7 @@ export const Interactive3DTeardown: React.FC<Interactive3DTeardownProps> = ({
           {/* Explode / Teardown Slider */}
           <div className="control-group explode-slider-group">
             <div className="label-with-val">
-              <span className="ctrl-label">💥 TEARDOWN / EXPLODE ASSEMBLY:</span>
+              <span className="ctrl-label">TEARDOWN / EXPLODE ASSEMBLY:</span>
               <span className="ctrl-val">{explodePct}%</span>
             </div>
             <input
@@ -986,7 +984,7 @@ export const Interactive3DTeardown: React.FC<Interactive3DTeardownProps> = ({
           {/* Slicing Cross-Section Plane */}
           <div className="control-group slicing-group">
             <div className="label-with-val">
-              <span className="ctrl-label">🔬 X-RAY SLICING PLANE:</span>
+              <span className="ctrl-label">X-RAY SLICING PLANE:</span>
               <span className="ctrl-val">{sliceAxis.toUpperCase()}</span>
             </div>
             <div className="slicing-axis-buttons">
@@ -1017,25 +1015,25 @@ export const Interactive3DTeardown: React.FC<Interactive3DTeardownProps> = ({
         <div className="control-row secondary-controls">
           {/* Animated Flow Simulators */}
           <div className="control-group flow-select-group">
-            <span className="ctrl-label">🌊 ACTIVE FLOW SIMULATION:</span>
+            <span className="ctrl-label">ACTIVE FLOW SIMULATION:</span>
             <div className="flow-pill-buttons">
               <button
                 className={`flow-pill ${flowMode === 'reefer' ? 'active reefer' : ''}`}
                 onClick={() => setFlowMode('reefer')}
               >
-                ❄️ Reefer Airflow Circuit
+                Reefer Airflow Circuit
               </button>
               <button
                 className={`flow-pill ${flowMode === 'powertrain' ? 'active powertrain' : ''}`}
                 onClick={() => setFlowMode('powertrain')}
               >
-                🔥 Powertrain Fuel Loop
+                Powertrain Fuel Loop
               </button>
               <button
                 className={`flow-pill ${flowMode === 'axle_forces' ? 'active forces' : ''}`}
                 onClick={() => setFlowMode('axle_forces')}
               >
-                ⚖️ 3D Axle Force Vectors
+                3D Axle Force Vectors
               </button>
               <button
                 className={`flow-pill ${flowMode === 'off' ? 'active' : ''}`}
@@ -1048,7 +1046,7 @@ export const Interactive3DTeardown: React.FC<Interactive3DTeardownProps> = ({
 
           {/* Camera Presets & Inspect Links */}
           <div className="control-group camera-presets-group">
-            <span className="ctrl-label">🎥 CAMERA PRESETS:</span>
+            <span className="ctrl-label">CAMERA PRESETS:</span>
             <div className="camera-btn-row">
               <button onClick={() => setCameraPreset('iso')} className="btn-cam">Isometric 3D</button>
               <button onClick={() => setCameraPreset('explode')} className="btn-cam">Exploded View</button>
@@ -1059,21 +1057,21 @@ export const Interactive3DTeardown: React.FC<Interactive3DTeardownProps> = ({
                 onClick={() => setAutoRotate(!autoRotate)}
                 className={`btn-cam ${autoRotate ? 'active' : ''}`}
               >
-                {autoRotate ? '⏸️ Stop Spin' : '🔄 Turntable'}
+                {autoRotate ? 'Stop Spin' : 'Turntable'}
               </button>
               <button
                 onClick={() => setWireframeEdges(!wireframeEdges)}
                 className={`btn-cam ${wireframeEdges ? 'active' : ''}`}
                 title="Toggle engineering CAD wireframe edges"
               >
-                {wireframeEdges ? '📐 Edges ON' : 'Edges OFF'}
+                {wireframeEdges ? 'Edges ON' : 'Edges OFF'}
               </button>
               <button
                 onClick={() => setGhostGlass(!ghostGlass)}
                 className={`btn-cam ${ghostGlass ? 'active' : ''}`}
                 title="Toggle translucent ghost x-ray shell"
               >
-                {ghostGlass ? '👻 Ghost Shell' : 'Solid Shell'}
+                {ghostGlass ? 'Ghost Shell' : 'Solid Shell'}
               </button>
             </div>
           </div>
@@ -1081,7 +1079,7 @@ export const Interactive3DTeardown: React.FC<Interactive3DTeardownProps> = ({
 
         {/* Row 3: Component Teardown Fast-Selector */}
         <div className="control-row component-selector-row">
-          <span className="ctrl-label">🔍 CLICK COMPONENT TO INSPECT:</span>
+          <span className="ctrl-label">CLICK COMPONENT TO INSPECT:</span>
           <div className="component-badges-scroll">
             {Object.values(COMPONENT_DOSSIERS).map((comp) => (
               <button

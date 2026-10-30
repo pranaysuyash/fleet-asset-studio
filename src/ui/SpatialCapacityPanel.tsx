@@ -33,7 +33,7 @@ export const SpatialCapacityPanel: React.FC<SpatialCapacityPanelProps> = ({
     <div className="spatial-panel-card">
       <div className="spatial-card-header">
         <div className="card-title-group">
-          <h3>📦 Spatial Cargo Fit & Clearance Engine</h3>
+          <h3>Spatial Cargo Fit & Clearance Engine</h3>
           <span className="subtitle">Real-time interior cavity collision & geometric packing</span>
         </div>
         <button
@@ -176,7 +176,7 @@ export const SpatialCapacityPanel: React.FC<SpatialCapacityPanelProps> = ({
       <div className="clearance-alert-grid">
         {/* Door Clearance */}
         <div className={`clearance-badge ${spatialFit.doorClearance.fits ? 'pass' : 'fail'}`}>
-          <div className="badge-icon">{spatialFit.doorClearance.fits ? '✓' : '⚠'}</div>
+          <div className="badge-icon">{spatialFit.doorClearance.fits ? 'PASS' : 'WARN'}</div>
           <div className="badge-content">
             <span className="badge-title">Door Aperture Entry</span>
             <span className="badge-desc">{spatialFit.doorClearance.message}</span>
@@ -185,7 +185,7 @@ export const SpatialCapacityPanel: React.FC<SpatialCapacityPanelProps> = ({
 
         {/* Ceiling Headroom Clearance */}
         <div className={`clearance-badge ${spatialFit.heightClearance.fits ? 'pass' : 'fail'}`}>
-          <div className="badge-icon">{spatialFit.heightClearance.fits ? '✓' : '⚠'}</div>
+          <div className="badge-icon">{spatialFit.heightClearance.fits ? 'PASS' : 'WARN'}</div>
           <div className="badge-content">
             <span className="badge-title">Vertical Ceiling Headroom</span>
             <span className="badge-desc">
@@ -198,7 +198,7 @@ export const SpatialCapacityPanel: React.FC<SpatialCapacityPanelProps> = ({
 
         {/* Floor Load Rating */}
         <div className={`clearance-badge ${spatialFit.floorLoad.withinRating ? 'pass' : 'fail'}`}>
-          <div className="badge-icon">{spatialFit.floorLoad.withinRating ? '✓' : '⚠'}</div>
+          <div className="badge-icon">{spatialFit.floorLoad.withinRating ? 'PASS' : 'WARN'}</div>
           <div className="badge-content">
             <span className="badge-title">Floor Loading Pressure</span>
             <span className="badge-desc">

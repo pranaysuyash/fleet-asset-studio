@@ -88,7 +88,7 @@ export const DialKitTuner: React.FC<DialKitTunerProps> = ({
       {/* Panel Header */}
       <div className="dialkit-header">
         <div className="dialkit-title-group">
-          <div className="dialkit-brand-icon">🎛️</div>
+          <div className="dialkit-brand-icon">DK</div>
           <div>
             <span className="dialkit-badge">DIALKIT ENGINE</span>
             <h4>Vector Isometric Tuner</h4>
@@ -100,7 +100,7 @@ export const DialKitTuner: React.FC<DialKitTunerProps> = ({
             onClick={() => setIsOpen(!isOpen)}
             title={isOpen ? 'Minimize Panel' : 'Expand Panel'}
           >
-            {isOpen ? '—' : '⛶'}
+            {isOpen ? '—' : 'MAX'}
           </button>
         </div>
       </div>
@@ -113,19 +113,19 @@ export const DialKitTuner: React.FC<DialKitTunerProps> = ({
               className={`d-tab-btn ${activeTab === 'camera' ? 'active' : ''}`}
               onClick={() => setActiveTab('camera')}
             >
-              📐 Camera & Mesh
+              Camera & Mesh
             </button>
             <button
               className={`d-tab-btn ${activeTab === 'lighting' ? 'active' : ''}`}
               onClick={() => setActiveTab('lighting')}
             >
-              💡 Light & Style
+              Light & Style
             </button>
             <button
               className={`d-tab-btn ${activeTab === 'presets' ? 'active' : ''}`}
               onClick={() => setActiveTab('presets')}
             >
-              ⚡ Presets
+              Presets
             </button>
           </div>
 
@@ -172,7 +172,7 @@ export const DialKitTuner: React.FC<DialKitTunerProps> = ({
                     className={`btn-turntable-toggle ${autoRotate ? 'active' : ''}`}
                     onClick={onToggleAutoRotate}
                   >
-                    {autoRotate ? '⏸️ Stop SVG Turntable' : '🔄 Run 60fps Turntable'}
+                    {autoRotate ? 'Stop SVG Turntable' : 'Run 60fps Turntable'}
                   </button>
                 </div>
               </div>
@@ -180,7 +180,7 @@ export const DialKitTuner: React.FC<DialKitTunerProps> = ({
               {/* Explode Kinematics Slider */}
               <div className="dialkit-control-group">
                 <div className="d-label-row">
-                  <span className="d-label">💥 EXPLODED VIEW KINEMATICS:</span>
+                  <span className="d-label">EXPLODED VIEW KINEMATICS:</span>
                   <strong className="d-val text-amber">{explodePct}%</strong>
                 </div>
                 <input
@@ -202,7 +202,7 @@ export const DialKitTuner: React.FC<DialKitTunerProps> = ({
               {/* Elevation (Pitch) Tilt Slider */}
               <div className="dialkit-control-group">
                 <div className="d-label-row">
-                  <span className="d-label">📐 ELEVATION TILT (PITCH):</span>
+                  <span className="d-label">ELEVATION TILT (PITCH):</span>
                   <strong className="d-val">{camera.elevationDeg}°</strong>
                 </div>
                 <input
@@ -218,7 +218,7 @@ export const DialKitTuner: React.FC<DialKitTunerProps> = ({
               {/* Zoom Scale */}
               <div className="dialkit-control-group">
                 <div className="d-label-row">
-                  <span className="d-label">🔍 ZOOM SCALE (PX / FT):</span>
+                  <span className="d-label">ZOOM SCALE (PX / FT):</span>
                   <strong className="d-val">{camera.scale.toFixed(1)} px</strong>
                 </div>
                 <input
@@ -262,14 +262,14 @@ export const DialKitTuner: React.FC<DialKitTunerProps> = ({
             <div className="dialkit-section">
               {/* Render Style Mode Selector */}
               <div className="dialkit-control-group">
-                <span className="d-label">🎨 VECTOR RENDERING STYLE:</span>
+                <span className="d-label">VECTOR RENDERING STYLE:</span>
                 <div className="render-style-grid">
                   {(
                     [
-                      { id: 'shaded', label: '🎨 Dynamic Shaded', desc: 'Sunlight normals & diffuse gradient' },
-                      { id: 'blueprint', label: '📐 Zafar Blueprint', desc: 'Cyan vector strokes & CAD grid' },
-                      { id: 'wireframe', label: '🕸️ CAD Wireframe', desc: 'Pure vector wireframe paths' },
-                      { id: 'flat', label: '📄 Technical Flat', desc: 'Flat architectural elevations' },
+                      { id: 'shaded', label: 'Dynamic Shaded', desc: 'Sunlight normals & diffuse gradient' },
+                      { id: 'blueprint', label: 'Zafar Blueprint', desc: 'Cyan vector strokes & CAD grid' },
+                      { id: 'wireframe', label: 'CAD Wireframe', desc: 'Pure vector wireframe paths' },
+                      { id: 'flat', label: 'Technical Flat', desc: 'Flat architectural elevations' },
                     ] as const
                   ).map((m) => (
                     <button
@@ -287,7 +287,7 @@ export const DialKitTuner: React.FC<DialKitTunerProps> = ({
               {/* Directional Sun Angle */}
               <div className="dialkit-control-group">
                 <div className="d-label-row">
-                  <span className="d-label">☀️ SUNLIGHT AZIMUTH:</span>
+                  <span className="d-label">SUNLIGHT AZIMUTH:</span>
                   <strong className="d-val">{camera.lightAzimuthDeg}°</strong>
                 </div>
                 <input
@@ -303,7 +303,7 @@ export const DialKitTuner: React.FC<DialKitTunerProps> = ({
               {/* Ambient Illumination */}
               <div className="dialkit-control-group">
                 <div className="d-label-row">
-                  <span className="d-label">💡 AMBIENT ILLUMINATION:</span>
+                  <span className="d-label">AMBIENT ILLUMINATION:</span>
                   <strong className="d-val">{Math.round(camera.ambientLight * 100)}%</strong>
                 </div>
                 <input
@@ -322,13 +322,13 @@ export const DialKitTuner: React.FC<DialKitTunerProps> = ({
           {/* TAB 3: PRESETS & EXPORT */}
           {activeTab === 'presets' && (
             <div className="dialkit-section">
-              <span className="d-label">⚡ CURATED AESTHETIC PRESETS:</span>
+              <span className="d-label">CURATED AESTHETIC PRESETS:</span>
               <div className="presets-list">
                 <button
                   className="btn-preset-card"
                   onClick={() => onApplyPreset('classic-iso')}
                 >
-                  <span className="preset-name">📐 Classic 30° Axonometric</span>
+                  <span className="preset-name">Classic 30° Axonometric</span>
                   <span className="preset-desc">Pure isometric 45° azimuth, 30° elevation with natural skylight</span>
                 </button>
 
@@ -336,7 +336,7 @@ export const DialKitTuner: React.FC<DialKitTunerProps> = ({
                   className="btn-preset-card"
                   onClick={() => onApplyPreset('zafar-blueprint')}
                 >
-                  <span className="preset-name">🔷 Zafar Lab Engineering Blueprint</span>
+                  <span className="preset-name">Zafar Lab Engineering Blueprint</span>
                   <span className="preset-desc">High-contrast cyan line-art with dimension leader lines & technical pins</span>
                 </button>
 
@@ -344,7 +344,7 @@ export const DialKitTuner: React.FC<DialKitTunerProps> = ({
                   className="btn-preset-card"
                   onClick={() => onApplyPreset('exploded-lab')}
                 >
-                  <span className="preset-name">💥 Full Exploded Separation</span>
+                  <span className="preset-name">Full Exploded Separation</span>
                   <span className="preset-desc">75% kinematic explosion showcasing Detroit DD15, cab tilt, and pallets</span>
                 </button>
 
@@ -352,7 +352,7 @@ export const DialKitTuner: React.FC<DialKitTunerProps> = ({
                   className="btn-preset-card"
                   onClick={() => onApplyPreset('golden-hour')}
                 >
-                  <span className="preset-name">🌇 Golden Hour Contrast</span>
+                  <span className="preset-name">Golden Hour Contrast</span>
                   <span className="preset-desc">Low angle dramatic directional sunlight with rich cast facet shading</span>
                 </button>
 
@@ -360,7 +360,7 @@ export const DialKitTuner: React.FC<DialKitTunerProps> = ({
                   className="btn-preset-card"
                   onClick={() => onApplyPreset('top-plan')}
                 >
-                  <span className="preset-name">🔭 Orthogonal Top Plan View</span>
+                  <span className="preset-name">Orthogonal Top Plan View</span>
                   <span className="preset-desc">70° steep pitch to inspect interior pallet row and tier distribution</span>
                 </button>
               </div>
@@ -371,7 +371,7 @@ export const DialKitTuner: React.FC<DialKitTunerProps> = ({
                   className="btn-export-config"
                   onClick={handleCopyConfig}
                 >
-                  {copiedToast ? '✓ Copied to Clipboard!' : '📋 Copy Camera Config JSON'}
+                  {copiedToast ? 'Copied to Clipboard!' : 'Copy Camera Config JSON'}
                 </button>
                 <span className="export-hint">Export parameters directly to production code or specs</span>
               </div>

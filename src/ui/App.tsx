@@ -26,8 +26,15 @@ import { AssetForgeModal } from './AssetForgeModal';
 import { ProjectBridgeBar } from './ProjectBridgeBar';
 import { SuiteDock } from './SuiteDock';
 import { platformBus } from '../engine/platformBus';
+import { useShipmentSession } from '../suite/ShipmentSession';
+import { useShipmentDraft } from '../suite/useShipmentDraft';
+import { StructuredValue } from '../suite/ShipmentInspector';
+import { equipmentForShipment, resultForVehicle, type EquipmentDraft } from '../engine/shipmentAdapter';
 
 export function App() {
+  const session = useShipmentSession();
+  const [sharedEquipment, setSharedEquipment] = useState<EquipmentDraft | null>(null);
+  const [publicationMessage, setPublicationMessage] = useState('');
   const [vehicleCatalog, setVehicleCatalog] = useState<VehicleSpec[]>(() => getVehicleCatalog());
   const [packageCatalog, setPackageCatalog] = useState<CargoPackageSpec[]>(() => getPackageCatalog());
 
@@ -51,8 +58,14 @@ export function App() {
   const [forgeInitialTab, setForgeInitialTab] = useState<'vehicle' | 'package'>('vehicle');
 
   const selectedVehicle = useMemo(() => {
-    return vehicleCatalog.find((v) => v.id === selectedVehicleId) || vehicleCatalog[0];
-  }, [vehicleCatalog, selectedVehicleId]);
+    return sharedEquipment?.equipmentId === selectedVehicleId ? sharedEquipment.vehicle : vehicleCatalog.find((v) => v.id === selectedVehicleId) ?? null;
+  }, [vehicleCatalog, selectedVehicleId, sharedEquipment]);
+  const draft = useShipmentDraft({ value: { equipmentId: selectedVehicleId, vehicle: selectedVehicle }, importValue: equipmentForShipment, applyValue: next => { setSelectedVehicleId(next.equipmentId); setSharedEquipment(next); setPublicationMessage(''); } });
+  const reviewed = useMemo(() => {
+    if (!session?.shipment) return null;
+    try { return { result: resultForVehicle(session.shipment, selectedVehicle), error: '' }; }
+    catch (error) { return { result: null, error: error instanceof Error ? error.message : 'Equipment cannot be published.' }; }
+  }, [session?.shipment, selectedVehicle]);
 
   const selectedPackage = useMemo(() => {
     return packageCatalog.find((p) => p.id === selectedPackageId) || packageCatalog[0];
@@ -60,11 +73,12 @@ export function App() {
 
   // Spatial Fit Calculation
   const spatialFit = useMemo(() => {
-    return computeSpatialFit(selectedVehicle, selectedPackage, quantityOverride ?? undefined);
+    return selectedVehicle ? computeSpatialFit(selectedVehicle, selectedPackage, quantityOverride ?? undefined) : null;
   }, [selectedVehicle, selectedPackage, quantityOverride]);
 
   // Temporal Simulation Calculation
   const temporalSimulation = useMemo(() => {
+    if (!selectedVehicle || !spatialFit) return null;
     return simulateTemporalDynamics(
       selectedVehicle,
       spatialFit.totalWeightLbs,
@@ -73,10 +87,11 @@ export function App() {
       spatialFit.placedUnits,
       selectedPackage.category
     );
-  }, [selectedVehicle, spatialFit.totalWeightLbs, distanceMiles, speedMph, spatialFit.placedUnits, selectedPackage]);
+  }, [selectedVehicle, spatialFit, distanceMiles, speedMph, selectedPackage]);
 
   // Broadcast vehicle changes across the platform bus
   useEffect(() => {
+    if (!selectedVehicle) return;
     platformBus.publish(
       'VEHICLE_CHANGED',
       {
@@ -94,6 +109,7 @@ export function App() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const params = new URLSearchParams(window.location.search);
+    if (params.has('shipment')) return;
     const vParam = params.get('vehicle');
     if (vParam) {
       const match = vehicleCatalog.find((v) => v.id === vParam || v.code.toLowerCase() === vParam.toLowerCase());
@@ -104,7 +120,7 @@ export function App() {
   const handleSaveCustomVehicle = (newVehicle: VehicleSpec) => {
     saveCustomVehicle(newVehicle);
     setVehicleCatalog(getVehicleCatalog());
-    setSelectedVehicleId(newVehicle.id);
+    setSharedEquipment(null); setSelectedVehicleId(newVehicle.id);
   };
 
   const handleSaveCustomPackage = (newPkg: CargoPackageSpec) => {
@@ -114,9 +130,36 @@ export function App() {
     setQuantityOverride(null);
   };
 
+  if (!selectedVehicle || !spatialFit || !temporalSimulation) return <div className="studio-app-container">
+    <SuiteDock currentProductId="product-04-asset-studio" />
+    <section className="shipment-native-panel" aria-label="Unresolved shipment equipment">
+      <h1>Equipment needs an explicit selection</h1>
+      <p role="status">The declared equipment ID “{selectedVehicleId}” has no complete native snapshot here. No replacement vehicle has been selected.</p>
+      <label htmlFor="resolve-vehicle">Choose a declared catalog vehicle</label>
+      <select id="resolve-vehicle" value="" onChange={event => { setSharedEquipment(null); setSelectedVehicleId(event.target.value); }}><option value="" disabled>Select equipment</option>{vehicleCatalog.map(vehicle => <option key={vehicle.id} value={vehicle.id}>{vehicle.name}</option>)}</select>
+      <button onClick={draft.loadCurrent}>Load current shared inputs</button>
+      {session?.shipment && <button onClick={() => session.inspect('stage:asset')}>Saved equipment details</button>}
+    </section>
+  </div>;
+
   return (
     <div className="studio-app-container">
+      <a href="#main-content" className="skip-link">Skip to main content</a>
       <SuiteDock currentProductId="product-04-asset-studio" />
+      {session?.selectedId && <section className="shipment-native-panel" aria-label="Shipment equipment task">
+        <div className="shipment-native-heading"><div><span className="shipment-native-kicker">EQUIPMENT DECISION</span><h2>{selectedVehicle.name}</h2></div><span>{draft.dirty ? 'Local selection changed' : 'Reviewed shared selection'}</span></div>
+        <p>{selectedVehicle.interior.lengthFt} × {selectedVehicle.interior.widthFt} × {selectedVehicle.interior.heightFt} ft interior · {selectedVehicle.weight.maxPayloadLbs.toLocaleString()} lb declared payload · {selectedVehicle.fuelEnergy.loadedMpg} loaded energy efficiency</p>
+        <p>Publishing equipment requires a new loading, receiving, dock and pricing review. Earlier decisions remain in shipment history. Package and axle simulators below remain local studies.</p>
+        <div className="shipment-task-buttons">
+          <button className="shipment-primary" disabled={!draft.canPublish || !reviewed?.result} onClick={async () => { if (!reviewed?.result || !draft.basis) return; const next = await session.submit('asset.publish', { equipmentId: selectedVehicle.id, result: reviewed.result }, draft.basis.revision); if (next) { draft.acknowledge(next, { equipmentId: selectedVehicleId, vehicle: selectedVehicle }); setPublicationMessage('Reviewed equipment snapshot published. Continue to Cargo Fit to review the affected loading plan.'); } }}>Publish reviewed equipment</button>
+          <button onClick={() => session.inspect('stage:asset')}>Saved equipment details</button>
+          <button disabled={session.busy || !session.online} onClick={draft.loadCurrent}>Load current shared inputs</button>
+          <a href={session.productUrl('product-01-cargo-fit')}>Continue to Cargo Fit</a>
+        </div>
+        <p role="status">{session.shipment?.status !== 'draft' ? 'Planning is locked after dispatch. Saved equipment remains inspectable; native studies do not change the shipment.' : draft.incoming ? 'The shipment changed. Your local selection is retained. Load current shared inputs before publishing.' : draft.error || reviewed?.error || publicationMessage || (session.online ? 'Review this declared vehicle before publishing its exact snapshot.' : 'Offline local study. Reconnect and load shared inputs before publishing.')}</p>
+        <details className="shipment-draft-fields"><summary>Reviewed vehicle specification, source and scope</summary><StructuredValue value={reviewed?.result?.details ?? selectedVehicle} /></details>
+      </section>}
+      {!session?.selectedId && <p className="native-local-note">{draft.detached ? 'Detached local equipment study. Your selection is retained; edits do not update a shipment.' : 'Independent asset studio. Catalog, custom assets and simulations work without a shared shipment.'}</p>}
       {/* Top Project Bridge Header */}
       <ProjectBridgeBar
         vehicle={selectedVehicle}
@@ -147,8 +190,9 @@ export function App() {
               aria-label="Select Commercial Cargo Vehicle"
               className="vehicle-main-select"
               value={selectedVehicleId}
-              onChange={(e) => setSelectedVehicleId(e.target.value)}
+              onChange={(e) => { setSharedEquipment(null); setSelectedVehicleId(e.target.value); setPublicationMessage(''); }}
             >
+              {!vehicleCatalog.some(vehicle => vehicle.id === selectedVehicleId) && <option value={selectedVehicleId}>{selectedVehicle.name} (saved shipment specification)</option>}
               <optgroup label="Class 8 Combinations (Semi-Trucks)">
                 {vehicleCatalog
                   .filter((v) => v.category === 'class_8_combination')
@@ -251,7 +295,7 @@ export function App() {
         </aside>
 
         {/* RIGHT / MAIN CONTENT: CANVAS VIEWS & ANALYTIC CONTROLS */}
-        <main className="studio-canvas-stage">
+        <main id="main-content" className="studio-canvas-stage" tabIndex={-1}>
           {/* View Mode Switcher Header */}
           <div className="view-mode-tabs-bar">
             <div className="tabs-left">
@@ -259,25 +303,25 @@ export function App() {
                 className={`tab-btn ${viewMode === '3d' ? 'active' : ''}`}
                 onClick={() => setViewMode('3d')}
               >
-                🎮 3D Assembly Canvas
+                3D Assembly Canvas
               </button>
               <button
                 className={`tab-btn tab-btn-teardown ${viewMode === 'teardown' ? 'active' : ''}`}
                 onClick={() => setViewMode('teardown')}
               >
-                💥 3D Teardown & Cutaway Lab
+                3D Teardown & Cutaway Lab
               </button>
               <button
                 className={`tab-btn ${viewMode === '2.5d' ? 'active' : ''}`}
                 onClick={() => setViewMode('2.5d')}
               >
-                📐 2.5D Isometric Technical
+                2.5D Isometric Technical
               </button>
               <button
                 className={`tab-btn ${viewMode === '2d' ? 'active' : ''}`}
                 onClick={() => setViewMode('2d')}
               >
-                📏 2D Orthographic CAD Blueprint
+                2D Orthographic CAD Blueprint
               </button>
             </div>
 

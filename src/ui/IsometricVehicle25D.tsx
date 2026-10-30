@@ -218,25 +218,25 @@ export const IsometricVehicle25D: React.FC<IsometricVehicle25DProps> = ({
             className={`btn-hud-pill ${camera.renderMode === 'shaded' ? 'active' : ''}`}
             onClick={() => setCamera((c) => ({ ...c, renderMode: 'shaded' }))}
           >
-            🎨 Shaded
+            Shaded
           </button>
           <button
             className={`btn-hud-pill ${camera.renderMode === 'blueprint' ? 'active blueprint' : ''}`}
             onClick={() => setCamera((c) => ({ ...c, renderMode: 'blueprint' }))}
           >
-            📐 Blueprint
+            Blueprint
           </button>
           <button
             className={`btn-hud-pill ${explodePct > 0 ? 'active amber' : ''}`}
             onClick={() => setExplodePct(explodePct > 0 ? 0 : 50)}
           >
-            💥 Explode {explodePct}%
+            Explode {explodePct}%
           </button>
           <button
             className={`btn-hud-pill ${autoRotate ? 'active cyan' : ''}`}
             onClick={() => setAutoRotate(!autoRotate)}
           >
-            {autoRotate ? '⏸️ Stop' : '🔄 Spin'}
+            {autoRotate ? 'Stop' : 'Spin'}
           </button>
           <span className="poly-count-badge">
             {projectedFaces.length} Faces · Pure SVG

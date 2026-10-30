@@ -48,7 +48,7 @@ export const MultiStopUnloadPanel: React.FC<MultiStopUnloadPanelProps> = ({ vehi
     <div className="multistop-panel-card">
       <div className="multistop-header">
         <div className="title-group">
-          <h3>🚚 Multi-Stop Drop Sequence & Dynamic CG Axle Simulator</h3>
+          <h3>Multi-Stop Drop Sequence & Dynamic CG Axle Simulator</h3>
           <span className="subtitle">
             Estimated Axle Load (Simplified Beam Model) — Detects forward drive-axle overload hazards as rear freight is unloaded across delivery stops. Indicative static model, not certified scale weight.
           </span>
@@ -67,7 +67,7 @@ export const MultiStopUnloadPanel: React.FC<MultiStopUnloadPanelProps> = ({ vehi
             onClick={() => setActiveStageIdx(idx)}
           >
             <div className="btn-stage-num">
-              {st.hazardDetected ? '⚠' : idx === 0 ? '📦' : idx === stages.length - 1 ? '🏁' : '📍'} Stage {idx}
+              Stage {idx}
             </div>
             <div className="btn-stage-label">
               {idx === 0 ? 'All 3 Stops Loaded' : idx === 1 ? 'Post-Drop Stop 1' : idx === 2 ? 'Post-Drop Stop 2' : 'Empty Return'}
@@ -175,7 +175,7 @@ export const MultiStopUnloadPanel: React.FC<MultiStopUnloadPanelProps> = ({ vehi
             />
           </div>
           <span className="gauge-pct text-cyan">
-            {dist.cgPercentFromNose < 40 ? '⚠ Nose Heavy' : dist.cgPercentFromNose > 60 ? '⚠ Tail Heavy' : '✓ Balanced Load'}
+            {dist.cgPercentFromNose < 40 ? 'Nose Heavy' : dist.cgPercentFromNose > 60 ? 'Tail Heavy' : 'Balanced Load'}
           </span>
         </div>
       </div>

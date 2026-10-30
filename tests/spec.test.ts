@@ -301,6 +301,18 @@ describe('Multi-Vehicle Fleet Splitter Heuristic', () => {
   });
 });
 
+describe('FAST Act 2,000-lb Clean Fuel Battery Electric Vehicle Weight Credit', () => {
+  it('models 82,000 lbs GVWR clean fuel credit for Class 8 BEV (23 U.S.C. § 127(s))', () => {
+    const electricSemi = STANDARD_VEHICLES.find((v) => v.id === 'electric-class8')!;
+    expect(electricSemi).toBeDefined();
+    expect(electricSemi.fuelEnergy.fuelType).toBe('electric');
+    // Standard diesel GVWR is 80,000 lbs; FAST Act § 5523 allows +2,000 lbs tare offset
+    expect(electricSemi.weight.gvwrLbs).toBe(82000);
+    expect(electricSemi.regulatory.bridgeLawAxleLimits.steerLbs).toBeGreaterThanOrEqual(12000);
+    expect(electricSemi.regulatory.bridgeLawAxleLimits.driveTandemLbs).toBeGreaterThanOrEqual(34000);
+  });
+});
+
 describe('3D View Modes & Teardown Specifications', () => {
   it('supports 3d, teardown, 2.5d, and 2d view modes', () => {
     const validModes: import('../src/engine/types').ViewMode[] = ['3d', 'teardown', '2.5d', '2d'];

@@ -33,7 +33,7 @@ export const TemporalSimulatorPanel: React.FC<TemporalSimulatorPanelProps> = ({
     <div className="temporal-panel-card">
       <div className="temporal-card-header">
         <div className="card-title-group">
-          <h3>⏱ Temporal Fuel Burn & Range Dynamics</h3>
+          <h3>Temporal Fuel Burn & Range Dynamics</h3>
           <span className="subtitle">Transit timeline, speed-drag penalties, and energy depletion</span>
         </div>
         <div className="corridor-presets">
@@ -135,7 +135,7 @@ export const TemporalSimulatorPanel: React.FC<TemporalSimulatorPanelProps> = ({
           <div className="telemetry-meta-row">
             <span>Effective Economy: <b>{simulation.effectiveMpg} {isElectric ? 'mi/kWh' : isHydrogen ? 'mi/kg' : 'MPG'}</b></span>
             {simulation.requiresRefuelStop && (
-              <span className="text-rose font-bold">⚠ Refuel Stop Required</span>
+              <span className="text-rose font-bold">Refuel Stop Required</span>
             )}
           </div>
         </div>

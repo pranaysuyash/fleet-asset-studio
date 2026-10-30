@@ -39,7 +39,7 @@ export function CarbonInsettingPanel({
     <div className="panel" style={{ marginTop: 24 }}>
       <div className="panel-h" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <b>🌱 GLEC Framework v3.0 Carbon Insetting Scenario Estimator</b>
+          <b>GLEC Framework v3.0 Carbon Insetting Scenario Estimator</b>
           <span style={{ marginLeft: 10, fontSize: 12, color: '#94a3b8' }}>
             Indicative Scope 1 &amp; Scope 3 Decarbonization Modeling
           </span>
@@ -57,7 +57,7 @@ export function CarbonInsettingPanel({
             cursor: 'pointer',
           }}
         >
-          📜 Generate Scenario Summary
+          Generate Scenario Summary
         </button>
       </div>
 
@@ -178,7 +178,7 @@ export function CarbonInsettingPanel({
         <div style={{ background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: 12 }}>
           <div style={{ fontSize: 11, color: '#94a3b8', textTransform: 'uppercase' }}>Emissions Scenario Tier</div>
           <div style={{ fontSize: 13, fontWeight: 700, color: footprint.insettingReductionPct >= 50 ? '#10b981' : '#f59e0b', marginTop: 8 }}>
-            ★ {footprint.indicativeScenarioCategory}
+            {footprint.indicativeScenarioCategory}
           </div>
           <div style={{ fontSize: 10, color: '#64748b', marginTop: 4 }}>
             Standard: {footprint.verificationStandard}
@@ -239,9 +239,7 @@ export function CarbonInsettingPanel({
               <button
                 onClick={() => setShowCertificate(false)}
                 style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: 20, cursor: 'pointer' }}
-              >
-                ✕
-              </button>
+              >Close</button>
             </div>
 
             <div style={{ padding: '16px 0', fontSize: 13, lineHeight: 1.6, color: '#cbd5e1' }}>
@@ -286,7 +284,7 @@ export function CarbonInsettingPanel({
                   cursor: 'pointer',
                 }}
               >
-                🖨️ Print Certificate
+                Print Certificate
               </button>
               <button
                 onClick={() => setShowCertificate(false)}

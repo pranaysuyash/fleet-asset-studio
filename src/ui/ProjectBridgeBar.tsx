@@ -13,6 +13,7 @@ import {
   exportSpecCsv,
 } from '../engine/bridges';
 import { isProductLicensed } from './SuiteDock';
+import { useShipmentSession } from '../suite/ShipmentSession';
 
 interface ProjectBridgeBarProps {
   vehicle: VehicleSpec;
@@ -33,12 +34,14 @@ export const ProjectBridgeBar: React.FC<ProjectBridgeBarProps> = ({
   speedMph,
   onOpenForgeModal,
 }) => {
+  const session = useShipmentSession();
+  const connected = Boolean(session?.selectedId);
   const [copyFeedback, setCopyFeedback] = useState<string | null>(null);
 
   const handleSendToCargoFit = () => {
     if (isProductLicensed('product-01-cargo-fit')) {
-      const url = buildCargoFitBridgeUrl(vehicle, selectedPackage, spatialFit.placedUnits);
-      window.open(url, '_blank');
+      const url = connected ? session!.productUrl('product-01-cargo-fit') : buildCargoFitBridgeUrl(vehicle, selectedPackage, spatialFit.placedUnits);
+      window.open(url, '_blank', 'noopener,noreferrer');
     } else {
       handleExportJson();
       setCopyFeedback('Product 01 is an add-on module. Exported Open Logistics Asset JSON.');
@@ -48,13 +51,13 @@ export const ProjectBridgeBar: React.FC<ProjectBridgeBarProps> = ({
 
   const handleSendToFreightPricing = () => {
     if (isProductLicensed('product-02-freight-pricing')) {
-      const url = buildFreightPricingBridgeUrl(
+      const url = connected ? session!.productUrl('product-02-freight-pricing') : buildFreightPricingBridgeUrl(
         vehicle,
         spatialFit.totalWeightLbs,
         distanceMiles,
         Boolean(selectedPackage.hazmatClass)
       );
-      window.open(url, '_blank');
+      window.open(url, '_blank', 'noopener,noreferrer');
     } else {
       handleExportJson();
       setCopyFeedback('Product 02 is an add-on module. Exported Open Logistics Asset JSON.');
@@ -64,8 +67,8 @@ export const ProjectBridgeBar: React.FC<ProjectBridgeBarProps> = ({
 
   const handleSendToHosPlanner = () => {
     if (isProductLicensed('product-03-hos-planner')) {
-      const url = buildHosPlannerBridgeUrl(vehicle, distanceMiles, speedMph);
-      window.open(url, '_blank');
+      const url = connected ? session!.productUrl('product-03-hos-planner') : buildHosPlannerBridgeUrl(vehicle, distanceMiles, speedMph);
+      window.open(url, '_blank', 'noopener,noreferrer');
     } else {
       handleExportJson();
       setCopyFeedback('Product 03 is an add-on module. Exported Open Logistics Asset JSON.');
@@ -83,7 +86,7 @@ export const ProjectBridgeBar: React.FC<ProjectBridgeBarProps> = ({
     a.click();
     URL.revokeObjectURL(url);
 
-    setCopyFeedback('✓ JSON Downloaded');
+    setCopyFeedback('JSON Downloaded');
     setTimeout(() => setCopyFeedback(null), 3000);
   };
 
@@ -97,7 +100,7 @@ export const ProjectBridgeBar: React.FC<ProjectBridgeBarProps> = ({
     a.click();
     URL.revokeObjectURL(url);
 
-    setCopyFeedback('✓ CSV Downloaded');
+    setCopyFeedback('CSV Downloaded');
     setTimeout(() => setCopyFeedback(null), 3000);
   };
 
@@ -105,7 +108,7 @@ export const ProjectBridgeBar: React.FC<ProjectBridgeBarProps> = ({
     <header className="bridge-bar-header">
       <div className="header-top-row">
         <div className="brand-group">
-          <div className="brand-logo">🚛</div>
+          <div className="brand-logo">AS</div>
           <div>
             <div className="brand-title">
               TRUCKING <span className="product-tag">Product 04</span>
@@ -121,32 +124,32 @@ export const ProjectBridgeBar: React.FC<ProjectBridgeBarProps> = ({
           <button
             className="bridge-btn btn-cargofit"
             onClick={handleSendToCargoFit}
-            title="Feed equipment dimensions & cargo rows into Product 01 (Cargo Fit)"
+            title={connected ? 'Open this shared shipment. Publish the reviewed equipment above to change its declared specification.' : 'Feed equipment dimensions & cargo rows into Product 01 (Cargo Fit)'}
           >
-            ↗ Send to Cargo Fit (P01)
+            {connected ? '↗ Open shipment in Cargo Fit (P01)' : '↗ Send to Cargo Fit (P01)'}
           </button>
           <button
             className="bridge-btn btn-pricing"
             onClick={handleSendToFreightPricing}
-            title="Feed vehicle tare, fuel MPG & payload weight into Product 02 (Freight Pricing HUD)"
+            title={connected ? 'Open this shared shipment. Local package simulations do not change its accepted pricing inputs.' : 'Feed vehicle tare, fuel MPG & payload weight into Product 02 (Freight Pricing HUD)'}
           >
-            ↗ Dispatch to Freight Pricing (P02)
+            {connected ? '↗ Open shipment in Pricing (P02)' : '↗ Dispatch to Freight Pricing (P02)'}
           </button>
           <button
             className="bridge-btn btn-hos"
             onClick={handleSendToHosPlanner}
-            title="Feed vehicle range, driving speed & fuel stops into Product 03 (HOS Planner)"
+            title={connected ? 'Open this shared shipment with its canonical lane and driver declaration.' : 'Feed vehicle range, driving speed & fuel stops into Product 03 (HOS Planner)'}
           >
-            ↗ Plan Corridor in HOS (P03)
+            {connected ? '↗ Open shipment in HOS (P03)' : '↗ Plan Corridor in HOS (P03)'}
           </button>
         </div>
 
         <div className="export-buttons-group">
           <button className="btn-secondary-chip" onClick={handleExportJson}>
-            {copyFeedback === '✓ JSON Downloaded' ? copyFeedback : '📋 Export JSON'}
+            {copyFeedback === 'JSON Downloaded' ? copyFeedback : 'Export JSON'}
           </button>
           <button className="btn-secondary-chip" onClick={handleExportCsv}>
-            {copyFeedback === '✓ CSV Downloaded' ? copyFeedback : '📊 Export CSV'}
+            {copyFeedback === 'CSV Downloaded' ? copyFeedback : 'Export CSV'}
           </button>
           <button className="btn-forge-highlight" onClick={onOpenForgeModal}>
             + Forge Asset

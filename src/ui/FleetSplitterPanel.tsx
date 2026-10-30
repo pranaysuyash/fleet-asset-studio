@@ -36,7 +36,7 @@ export const FleetSplitterPanel: React.FC = () => {
     <div className="spatial-panel-card">
       <div className="spatial-card-header">
         <div className="card-title-group">
-          <h3>🚚 Multi-Vehicle Fleet Splitter & Allocation Heuristic</h3>
+          <h3>Multi-Vehicle Fleet Splitter & Allocation Heuristic</h3>
           <span className="subtitle">
             Partitions manifests exceeding 45,000 lbs or 26 GMA pallets into optimal vehicle combinations
           </span>

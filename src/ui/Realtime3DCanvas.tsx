@@ -673,14 +673,14 @@ export const Realtime3DCanvas: React.FC<Realtime3DCanvasProps> = ({
             onClick={onToggleDoors}
             title="Open or close rear loading aperture doors"
           >
-            {doorsOpen ? '🚪 Doors: Open' : '🚪 Doors: Closed'}
+            {doorsOpen ? 'Doors: Open' : 'Doors: Closed'}
           </button>
           <button
             className={`action-btn ${autoRotate ? 'active' : ''}`}
             onClick={() => setAutoRotate(!autoRotate)}
             title="Toggle turntable auto-rotation"
           >
-            {autoRotate ? '⏸ Pause Rotate' : '🔄 Auto Rotate'}
+            {autoRotate ? 'Pause Rotate' : 'Auto Rotate'}
           </button>
         </div>
       </div>
@@ -688,7 +688,7 @@ export const Realtime3DCanvas: React.FC<Realtime3DCanvasProps> = ({
       <div ref={mountRef} className="three-mount-container" />
 
       <div className="canvas-dock-hint">
-        <span>🖱 Left Click + Drag to Orbit</span>
+        <span>Left Click + Drag to Orbit</span>
         <span>• Scroll to Zoom</span>
         <span>• Loaded Units: <b>{placements.length}</b> inside cavity</span>
       </div>
