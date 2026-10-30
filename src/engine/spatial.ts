@@ -105,10 +105,16 @@ export function computeSpatialFit(
       : 0;
   const isOverweight = totalWeightLbs > vehicle.weight.maxPayloadLbs;
 
-  // Floor load rating
+  // Floor load rating (Average distributed across trailer floor)
   const floorAreaSqFt = vehicle.interior.lengthFt * vehicle.interior.widthFt;
   const lbsPerSqFt = floorAreaSqFt > 0 ? totalWeightLbs / floorAreaSqFt : 0;
   const withinRating = lbsPerSqFt <= vehicle.regulatory.floorRatingLbsPerSqFt;
+
+  // Concentrated local footprint load (contact patch pressure of stacked column)
+  const unitFootprintSqFt = (pkgL * pkgW) / 144;
+  const stackedWeightPerColumn = pkg.weight.grossWeightLbs * (effectiveTiers > 0 ? effectiveTiers : 1);
+  const concentratedLbsPerSqFt = unitFootprintSqFt > 0 ? stackedWeightPerColumn / unitFootprintSqFt : 0;
+  const concentratedWithinRating = concentratedLbsPerSqFt <= vehicle.regulatory.floorRatingLbsPerSqFt;
 
   // Generate 3D grid placements
   const gridPlacements: GridPlacement[] = [];
@@ -158,8 +164,10 @@ export function computeSpatialFit(
     },
     floorLoad: {
       lbsPerSqFt: Math.round(lbsPerSqFt * 10) / 10,
+      concentratedLbsPerSqFt: Math.round(concentratedLbsPerSqFt * 10) / 10,
       maxRatingLbsPerSqFt: vehicle.regulatory.floorRatingLbsPerSqFt,
       withinRating,
+      concentratedWithinRating,
     },
     gridPlacements,
   };

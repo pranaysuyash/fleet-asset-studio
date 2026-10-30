@@ -331,4 +331,29 @@ describe('3D View Modes & Teardown Specifications', () => {
   });
 });
 
+describe('First-Principles Concentrated Floor Loading & Fuel Exhaustion Modeling', () => {
+  it('calculates both distributed average and local concentrated contact patch floor pressure (AS-03)', () => {
+    const dryVan = STANDARD_VEHICLES.find((v) => v.id === 'dry-van-53')!;
+    const heavyPallet = STANDARD_PACKAGES.find((p) => p.id === 'pallet-gma-48x40')!;
+    // Pallet is 48x40 = 13.33 sq ft. 1,600 lbs / 13.33 = ~120 lbs/sqft concentrated
+    const fit = computeSpatialFit(dryVan, heavyPallet, 4);
+    expect(fit.floorLoad.lbsPerSqFt).toBeGreaterThan(0);
+    expect(fit.floorLoad.concentratedLbsPerSqFt).toBeGreaterThan(fit.floorLoad.lbsPerSqFt);
+    expect(typeof fit.floorLoad.withinRating).toBe('boolean');
+    expect(typeof fit.floorLoad.concentratedWithinRating).toBe('boolean');
+  });
+
+  it('detects single-tank fuel exhaustion and schedules en-route refuel stops with dwell time (AS-04)', () => {
+    const dryVan = STANDARD_VEHICLES.find((v) => v.id === 'dry-van-53')!;
+    // 1500 miles on a 150 gal tank (~900 mile range) requires en-route refueling
+    const sim = simulateTemporalDynamics(dryVan, 40000, 1500, 65);
+    expect(sim.requiresRefuelStop).toBe(true);
+    expect(sim.refuelStopsCount).toBeGreaterThan(0);
+    expect(sim.refuelDwellHours).toBeGreaterThan(0);
+    expect(sim.fuelDepletionWarning).toContain('exceeds single-tank range');
+    // Total turnaround hours must include refueling dwell
+    expect(sim.totalTurnaroundHours).toBeGreaterThan(sim.drivingTimeHours + sim.loadingDockTimeHours + sim.unloadingDockTimeHours);
+  });
+});
+
 

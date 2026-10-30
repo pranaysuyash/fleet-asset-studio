@@ -199,8 +199,10 @@ export interface SpatialFitResult {
   };
   floorLoad: {
     lbsPerSqFt: number;
+    concentratedLbsPerSqFt: number;
     maxRatingLbsPerSqFt: number;
     withinRating: boolean;
+    concentratedWithinRating: boolean;
   };
   gridPlacements: GridPlacement[];
 }
@@ -215,6 +217,9 @@ export interface TemporalSimulation {
   fuelPercent: number;
   estimatedRangeRemaining: number;
   requiresRefuelStop: boolean;
+  refuelStopsCount?: number;
+  refuelDwellHours?: number;
+  fuelDepletionWarning?: string;
   reeferFuelBurnedGal: number;
   totalFuelCostEst: number;
   co2EmittedLbs: number;

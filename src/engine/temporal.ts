@@ -34,7 +34,21 @@ export function simulateTemporalDynamics(
   const remainingFuel = Math.max(0, capacity - fuelBurned);
   const fuelPercent = capacity > 0 ? (remainingFuel / capacity) * 100 : 0;
   const estimatedRangeRemaining = remainingFuel * effectiveMpg;
-  const requiresRefuelStop = fuelPercent < 15.0;
+  const singleTankRange = capacity * effectiveMpg;
+
+  // Refueling stops calculation if trip exceeds usable fuel capacity (assuming 15% reserve buffer)
+  const usableCapacity = capacity * 0.85;
+  let refuelStopsCount = 0;
+  let refuelDwellHours = 0;
+  let fuelDepletionWarning: string | undefined = undefined;
+
+  if (fuelBurned > usableCapacity && capacity > 0) {
+    const fuelDeficit = fuelBurned - usableCapacity;
+    refuelStopsCount = Math.ceil(fuelDeficit / (capacity * 0.75));
+    refuelDwellHours = refuelStopsCount * 0.75; // 45 minutes per commercial truck stop
+    fuelDepletionWarning = `Trip distance (${Math.round(safeDistance)} mi) exceeds single-tank range (~${Math.round(singleTankRange)} mi). Requires ${refuelStopsCount} en-route refueling stop(s) adding ${(refuelDwellHours * 60).toFixed(0)} min dwell.`;
+  }
+  const requiresRefuelStop = refuelStopsCount > 0 || fuelPercent < 15.0;
 
   // Reefer auxiliary fuel
   let reeferFuelBurnedGal = 0;
@@ -74,7 +88,7 @@ export function simulateTemporalDynamics(
   const loadingMinutes = Math.min(240, Math.max(15, totalPackageUnits * minutesPerUnit));
   const loadingDockTimeHours = loadingMinutes / 60;
   const unloadingDockTimeHours = loadingMinutes / 60;
-  const totalTurnaroundHours = drivingTimeHours + loadingDockTimeHours + unloadingDockTimeHours;
+  const totalTurnaroundHours = drivingTimeHours + loadingDockTimeHours + unloadingDockTimeHours + refuelDwellHours;
 
   return {
     distanceMiles: Math.round(safeDistance),
@@ -86,6 +100,9 @@ export function simulateTemporalDynamics(
     fuelPercent: Math.round(fuelPercent),
     estimatedRangeRemaining: Math.round(estimatedRangeRemaining),
     requiresRefuelStop,
+    refuelStopsCount,
+    refuelDwellHours: Math.round(refuelDwellHours * 10) / 10,
+    fuelDepletionWarning,
     reeferFuelBurnedGal: Math.round(reeferFuelBurnedGal * 10) / 10,
     totalFuelCostEst: Math.round(totalFuelCostEst),
     co2EmittedLbs: Math.round(co2EmittedLbs),
