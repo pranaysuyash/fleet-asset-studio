@@ -23,6 +23,8 @@ import { MultiStopUnloadPanel } from './MultiStopUnloadPanel';
 import { FleetSplitterPanel } from './FleetSplitterPanel';
 import { CarbonInsettingPanel } from './CarbonInsettingPanel';
 import { AssetForgeModal } from './AssetForgeModal';
+import { AeroEcoModelerModal } from './AeroEcoModelerModal';
+import { TrailerIoTSensorsModal } from './TrailerIoTSensorsModal';
 import { ProjectBridgeBar } from './ProjectBridgeBar';
 import { SuiteDock } from './SuiteDock';
 import { platformBus } from '../engine/platformBus';
@@ -56,6 +58,8 @@ export function App() {
   // Modal State
   const [isForgeModalOpen, setIsForgeModalOpen] = useState(false);
   const [forgeInitialTab, setForgeInitialTab] = useState<'vehicle' | 'package'>('vehicle');
+  const [isAeroModalOpen, setIsAeroModalOpen] = useState(false);
+  const [isTrailerIoTModalOpen, setIsTrailerIoTModalOpen] = useState(false);
 
   const selectedVehicle = useMemo(() => {
     return sharedEquipment?.equipmentId === selectedVehicleId ? sharedEquipment.vehicle : vehicleCatalog.find((v) => v.id === selectedVehicleId) ?? null;
@@ -325,7 +329,39 @@ export function App() {
               </button>
             </div>
 
-            <div className="tabs-right">
+            <div className="tabs-right" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <button
+                type="button"
+                onClick={() => setIsAeroModalOpen(true)}
+                style={{
+                  padding: '4px 10px',
+                  borderRadius: 4,
+                  fontSize: '11px',
+                  fontWeight: 600,
+                  border: '1px solid rgba(52, 211, 153, 0.4)',
+                  background: '#064e3b',
+                  color: '#6ee7b7',
+                  cursor: 'pointer',
+                }}
+              >
+                SmartWay Aero Modeler 🍃
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsTrailerIoTModalOpen(true)}
+                style={{
+                  padding: '4px 10px',
+                  borderRadius: 4,
+                  fontSize: '11px',
+                  fontWeight: 600,
+                  border: '1px solid rgba(56, 189, 248, 0.4)',
+                  background: '#0c4a6e',
+                  color: '#38bdf8',
+                  cursor: 'pointer',
+                }}
+              >
+                Smart Trailer IoT 📡
+              </button>
               <span className="status-indicator">
                 <span className="indicator-dot pulse-green" />
                 Live Spatial Sync Active
@@ -421,6 +457,19 @@ export function App() {
           onSavePackage={handleSaveCustomPackage}
         />
       )}
+
+      {/* SmartWay Aero & Eco Modeler Modal */}
+      <AeroEcoModelerModal
+        isOpen={isAeroModalOpen}
+        onClose={() => setIsAeroModalOpen(false)}
+        vehicleName={selectedVehicle.name}
+      />
+
+      {/* Smart Trailer IoT Sensors Modal */}
+      <TrailerIoTSensorsModal
+        isOpen={isTrailerIoTModalOpen}
+        onClose={() => setIsTrailerIoTModalOpen(false)}
+      />
     </div>
   );
 }
